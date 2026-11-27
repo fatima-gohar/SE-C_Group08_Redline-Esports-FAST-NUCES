@@ -6,7 +6,6 @@
   <title>Game Categories | Redline Esports</title>
   <link rel="icon" type="image/svg+xml" href="../images/redline-logo.svg" />
   <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="../css/match-details.css" />
   <link rel="stylesheet" href="../css/game-categories.css" />
 </head>
 <body>
@@ -72,105 +71,30 @@
   </header>
 
   <main>
-    <!-- State 1: Game Categories -->
-    <section id="categoriesView" class="categories-page">
+    <section class="categories-page">
       <div class="container">
         <div class="page-intro">
           <span class="page-eyebrow">Pick Your Battle</span>
           <h1 class="page-title">Game <span>Categories</span></h1>
           <p class="page-subtitle">Choose your game.</p>
+
+          <div class="search-bar-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="search"
+              id="gameSearchInput"
+              class="category-search-input"
+              placeholder="Search games..."
+              aria-label="Search games"
+            />
+          </div>
         </div>
 
         <div id="categoryGrid" class="category-grid"></div>
-      </div>
-    </section>
-
-    <!-- State 2: Game Hub (Matches / Teams / Rankings) -->
-    <section id="hubView" class="hub-page" hidden>
-      <div class="container">
-        <div class="view-top-bar">
-          <div>
-            <span class="page-eyebrow">Game Division</span>
-            <h1 id="hubTitle" class="page-title"></h1>
-            <p class="page-subtitle">Matches, teams, rankings</p>
-          </div>
-          <button type="button" id="backToCategoriesBtn" class="btn-back">&larr; Back to Game Categories</button>
-        </div>
-
-        <div class="hub-tabs" role="tablist" aria-label="Game Hub Sections">
-          <button type="button" class="hub-tab is-active" data-tab="matches" role="tab" aria-selected="true">Matches</button>
-          <button type="button" class="hub-tab" data-tab="teams" role="tab" aria-selected="false">Teams</button>
-          <button type="button" class="hub-tab" data-tab="rankings" role="tab" aria-selected="false">Rankings</button>
-        </div>
-
-        <div id="hubContent"></div>
-      </div>
-    </section>
-
-    <!-- State 3: Match Details (Connected Detail View) -->
-    <section id="catDetailsView" class="details-page" hidden>
-      <div class="container">
-        <div class="details-top-bar">
-          <div>
-            <span class="page-eyebrow">The Scoreboard</span>
-            <h1 class="page-title">Match <span>Details</span></h1>
-          </div>
-          <button type="button" id="backToHubBtn" class="btn-back">&larr; Back to Matches</button>
-        </div>
-
-        <div class="details-panel">
-          <div class="details-media-col">
-            <div class="details-image-box">
-              <img id="catMatchImage" src="../images/matches/valorant-match.jpg" alt="Match Arena Visual" />
-            </div>
-            <button type="button" id="seeLeaderboardBtn" class="btn-leaderboard">
-              See Valorant Leaderboard
-            </button>
-          </div>
-
-          <div class="details-info-col">
-            <h2 id="catMatchTeams" class="matchup-heading"></h2>
-
-            <div class="match-stats-list">
-              <div class="stat-line">
-                <span class="stat-label">Score:</span>
-                <span id="catMatchScore" class="stat-value"></span>
-              </div>
-              <div class="stat-line">
-                <span class="stat-label">Date:</span>
-                <span id="catMatchDate" class="stat-value"></span>
-              </div>
-              <div class="stat-line">
-                <span class="stat-label">Map:</span>
-                <span id="catMatchMap" class="stat-value"></span>
-              </div>
-            </div>
-
-            <div class="top-player-section">
-              <span class="top-player-label">Top Player:</span>
-              <div class="top-player-card">
-                <img src="../images/player-avatar.svg" alt="Top Player Avatar" class="player-avatar" />
-                <span id="catMatchTopPlayer" class="top-player-name"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- State 4: Game Leaderboard View -->
-    <section id="catLeaderboardView" class="hub-page" hidden>
-      <div class="container">
-        <div class="view-top-bar">
-          <div>
-            <span class="page-eyebrow">Division Standings</span>
-            <h1 id="catLeaderboardTitle" class="page-title"></h1>
-            <p id="catLeaderboardSubtitle" class="page-subtitle"></p>
-          </div>
-          <button type="button" id="backFromLeaderboardBtn" class="btn-back">&larr; Back to Matches</button>
-        </div>
-
-        <div id="catLeaderboardContent"></div>
+        <p id="emptySearchState" class="empty-search-state" hidden>No games match your search. Try Valorant, BGMI, or CS2.</p>
       </div>
     </section>
   </main>
@@ -231,7 +155,7 @@
   </div>
 
   <script src="../js/main.js"></script>
-  <script src="../js/matches-data.js"></script>
+  <script src="../js/games-data.js"></script>
   <script src="../js/game-categories.js"></script>
 </body>
 </html>
