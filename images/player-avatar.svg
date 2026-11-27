@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Top Player Avatar">
+  <circle cx="40" cy="40" r="38" fill="#161a27" stroke="#ef233c" stroke-width="3" />
+  <circle cx="40" cy="30" r="13" fill="#ffffff" />
+  <path d="M18 66 C20 52 29 46 40 46 C51 46 60 52 62 66" fill="#ffffff" />
+</svg>

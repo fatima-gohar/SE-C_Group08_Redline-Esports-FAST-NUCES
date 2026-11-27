@@ -1,0 +1,323 @@
+/* ==========================================================================
+   Redline Esports - Match Results Page Styles (Prototype + Theme)
+   ========================================================================== */
+
+.results-page {
+  padding: 3rem 0 1rem;
+}
+
+/* Title & Filter Pills
+   -------------------------------------------------------------------------- */
+
+.page-intro {
+  margin-bottom: 1.75rem;
+}
+
+.page-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.65rem;
+}
+
+.page-eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 2px;
+  background-color: var(--red);
+}
+
+.page-title {
+  font-size: clamp(2rem, 4vw, 2.85rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.page-title span {
+  color: var(--red);
+}
+
+.page-subtitle {
+  font-size: 0.96rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.game-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.filter-pill {
+  padding: 0.48rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  color: var(--text-light);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.filter-pill:hover,
+.filter-pill:focus-visible {
+  border-color: var(--red);
+  color: var(--white);
+}
+
+.filter-pill.is-active {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+}
+
+/* Two-Column Main Layout: Match Table (Left) + Trophy Card (Right)
+   -------------------------------------------------------------------------- */
+
+.results-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.35fr) minmax(240px, 0.95fr);
+  gap: 1.35rem;
+  align-items: stretch;
+}
+
+.table-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.matches-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.matches-table thead th {
+  padding: 1rem 0.9rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--white);
+  background-color: var(--bg-surface-alt);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.matches-table tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition);
+}
+
+.matches-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.matches-table tbody tr:hover {
+  background-color: var(--bg-hover);
+}
+
+.matches-table tbody td {
+  padding: 1.2rem 0.9rem;
+  vertical-align: middle;
+  font-size: 0.94rem;
+  color: var(--text-light);
+}
+
+.date-cell {
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.teams-cell {
+  line-height: 1.35;
+}
+
+.team-line {
+  display: block;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.vs-line {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--red);
+  margin: 0.14rem 0;
+}
+
+.score-cell {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+.winner-cell {
+  font-weight: 700;
+  color: var(--white);
+}
+
+.btn-details {
+  padding: 0.45rem 0.85rem;
+  background-color: transparent;
+  border: 1px solid var(--red);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.btn-details:hover,
+.btn-details:focus-visible {
+  background-color: var(--red);
+}
+
+/* Right Column Trophy Card
+   -------------------------------------------------------------------------- */
+
+.trophy-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 320px;
+  transition: border-color var(--transition);
+}
+
+.trophy-card:hover {
+  border-color: var(--red);
+}
+
+.trophy-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trophy-caption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(to top, rgba(10, 12, 18, 0.92), transparent);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-align: center;
+}
+
+/* Match Details Modal Content
+   -------------------------------------------------------------------------- */
+
+.details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.92rem;
+}
+
+.details-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.details-label {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.details-value {
+  color: var(--white);
+  font-weight: 700;
+  text-align: right;
+}
+
+/* Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 920px) {
+  .results-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .trophy-card {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 620px) {
+  .results-page {
+    padding-top: 2rem;
+  }
+
+  .matches-table thead {
+    display: none;
+  }
+
+  .matches-table,
+  .matches-table tbody,
+  .matches-table tr,
+  .matches-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .matches-table tbody tr {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  .matches-table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.42rem 0;
+    text-align: right;
+  }
+
+  .matches-table tbody td::before {
+    content: attr(data-label);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  .teams-cell {
+    text-align: right;
+  }
+}

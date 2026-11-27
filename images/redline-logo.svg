@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Redline Esports Logo">
+  <defs>
+    <linearGradient id="rlBadge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff2438" />
+      <stop offset="100%" stop-color="#cc1124" />
+    </linearGradient>
+  </defs>
+  <polygon points="10,4 58,4 60,10 60,54 54,60 6,60 4,54 4,10" fill="url(#rlBadge)" />
+  <path d="M21 47 L26 17 H39 C45 17 48 20 47 26 C46 30 43 33 38 34 L45 47 H37 L31 35 H29 L27 47 H21 Z M30 23 L29 30 H36 C39 30 40 28 40 26 C40 24 39 23 36 23 H30 Z" fill="#ffffff" />
+</svg>

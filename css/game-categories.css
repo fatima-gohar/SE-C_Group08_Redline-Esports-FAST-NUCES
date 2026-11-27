@@ -1,0 +1,351 @@
+/* ==========================================================================
+   Redline Esports - Game Categories & Interactive Hub Styles
+   ========================================================================== */
+
+.categories-page,
+.hub-page {
+  padding: 3rem 0 1rem;
+}
+
+.page-intro {
+  margin-bottom: 1.75rem;
+}
+
+.view-top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.65rem;
+}
+
+.page-eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 2px;
+  background-color: var(--red);
+}
+
+.page-title {
+  font-size: clamp(2rem, 4vw, 2.85rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+}
+
+.page-title span {
+  color: var(--red);
+}
+
+.page-subtitle {
+  font-size: 0.96rem;
+  color: var(--text-muted);
+}
+
+/* State 1: 3 Game Category Cards
+   -------------------------------------------------------------------------- */
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.35rem;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--red);
+}
+
+.category-thumb {
+  aspect-ratio: 16 / 10;
+  background-color: var(--bg-page);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.category-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.35rem;
+  text-align: center;
+}
+
+.category-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 0.35rem;
+}
+
+.category-desc {
+  font-size: 0.94rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+
+.btn-view-game {
+  display: inline-block;
+  align-self: center;
+  padding: 0.55rem 1.4rem;
+  background-color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 999px;
+  color: var(--white);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.btn-view-game:hover,
+.btn-view-game:focus-visible {
+  background-color: var(--red-dark);
+}
+
+/* State 2: Game Hub Tabs & Tables
+   -------------------------------------------------------------------------- */
+
+.hub-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.35rem;
+}
+
+.hub-tab {
+  padding: 0.5rem 1.3rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  color: var(--text-light);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.hub-tab:hover,
+.hub-tab:focus-visible {
+  border-color: var(--red);
+  color: var(--white);
+}
+
+.hub-tab.is-active {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+}
+
+.hub-table-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.hub-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.hub-table thead th {
+  padding: 0.95rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  background-color: var(--bg-surface-alt);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.hub-table tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition);
+}
+
+.hub-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.hub-table tbody tr:hover {
+  background-color: var(--bg-hover);
+}
+
+.hub-table tbody td {
+  padding: 1.1rem 0.9rem;
+  font-size: 0.94rem;
+  color: var(--text-light);
+}
+
+.btn-row-action {
+  padding: 0.42rem 0.9rem;
+  background-color: transparent;
+  border: 1px solid var(--red);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.btn-row-action:hover,
+.btn-row-action:focus-visible {
+  background-color: var(--red);
+}
+
+/* State 4 / Rankings Layout (Table + Trophy Panel)
+   -------------------------------------------------------------------------- */
+
+.leaderboard-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(240px, 0.95fr);
+  gap: 1.35rem;
+  align-items: stretch;
+}
+
+.trophy-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 290px;
+}
+
+.trophy-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trophy-caption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(to top, rgba(10, 12, 18, 0.92), transparent);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-align: center;
+}
+
+.rank-badge {
+  display: inline-block;
+  min-width: 28px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.rank-top {
+  color: var(--red);
+}
+
+.points-cell {
+  font-weight: 800;
+  color: var(--white);
+}
+
+/* Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 920px) {
+  .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .leaderboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .trophy-card {
+    max-height: 280px;
+  }
+}
+
+@media (max-width: 640px) {
+  .categories-page,
+  .hub-page {
+    padding-top: 2rem;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hub-table thead {
+    display: none;
+  }
+
+  .hub-table,
+  .hub-table tbody,
+  .hub-table tr,
+  .hub-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .hub-table tbody tr {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  .hub-table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    text-align: right;
+  }
+
+  .hub-table tbody td::before {
+    content: attr(data-label);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-align: left;
+  }
+}
