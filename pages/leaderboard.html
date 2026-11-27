@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valorant Ranked Leaderboard | Redline Esports</title>
+  <link rel="icon" type="image/svg+xml" href="../images/redline-logo.svg" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/match-results.css" />
+  <link rel="stylesheet" href="../css/game-categories.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="brand" aria-label="Redline Esports Home">
+        <img src="../images/redline-logo.svg" alt="Redline Esports Logo" class="brand-logo" />
+        <div class="brand-text">
+          <span class="brand-name">Redline Esports</span>
+          <span class="brand-sub">FAST NUCES</span>
+        </div>
+      </a>
+
+      <div class="header-right">
+        <nav class="main-nav" aria-label="Primary Navigation">
+          <ul class="nav-links">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="tournaments.html" class="nav-link">Tournaments</a></li>
+            <li><a href="teams.html" class="nav-link">Teams</a></li>
+            <li><a href="match-results.html" class="nav-link">Matches</a></li>
+            <li><a href="leaderboard.html" class="nav-link active" aria-current="page">Rankings</a></li>
+            <li><a href="news.html" class="nav-link">News</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-controls">
+          <button type="button" id="openJoinModal" class="btn-join">Join Redline</button>
+          <button
+            type="button"
+            id="menuToggle"
+            class="menu-toggle"
+            aria-label="Show all pages"
+            aria-expanded="false"
+            aria-controls="pagesDropdown"
+          >
+            <span class="menu-toggle-bar"></span>
+            <span class="menu-toggle-bar"></span>
+            <span class="menu-toggle-bar"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="pagesDropdown" class="pages-dropdown" hidden>
+        <ul class="dropdown-list">
+          <li class="mobile-only-link"><a href="../index.html" class="dropdown-link">Home</a></li>
+          <li><a href="tournaments.html" class="dropdown-link">Tournaments</a></li>
+          <li><a href="teams.html" class="dropdown-link">Teams</a></li>
+          <li><a href="team-registration.html" class="dropdown-link">Team Registration</a></li>
+          <li><a href="player-profiles.html" class="dropdown-link">Player Profiles</a></li>
+          <li><a href="match-schedule.html" class="dropdown-link">Match Schedule</a></li>
+          <li><a href="match-results.html" class="dropdown-link">Match Results</a></li>
+          <li><a href="game-categories.html" class="dropdown-link">Game Categories</a></li>
+          <li><a href="leaderboard.html" class="dropdown-link active" aria-current="page">Leaderboard</a></li>
+          <li><a href="university-rankings.html" class="dropdown-link">University Rankings</a></li>
+          <li><a href="hall-of-fame.html" class="dropdown-link">Hall of Fame</a></li>
+          <li><a href="news.html" class="dropdown-link">Gaming News</a></li>
+          <li><a href="media-gallery.html" class="dropdown-link">Media Gallery</a></li>
+          <li><a href="contact.html" class="dropdown-link">Contact Us</a></li>
+          <li><a href="about.html" class="dropdown-link">About Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hub-page">
+      <div class="container">
+        <div class="view-top-bar">
+          <div>
+            <span class="page-eyebrow">Division Standings</span>
+            <h1 id="leaderboardTitle" class="page-title">Valorant Ranked <span>Leaderboard</span></h1>
+            <p id="leaderboardSubtitle" class="page-subtitle">Top teams in Valorant.</p>
+          </div>
+
+          <div class="top-bar-actions">
+            <a id="backToHubLink" href="valorant-hub.html" class="btn-back">&larr; Back to Valorant Hub</a>
+            <a href="match-results.html" class="btn-back">Back to Matches</a>
+          </div>
+        </div>
+
+        <div class="leaderboard-filters" role="group" aria-label="Select game leaderboard">
+          <button type="button" class="filter-pill is-active" data-game="Valorant">Valorant</button>
+          <button type="button" class="filter-pill" data-game="BGMI">BGMI</button>
+          <button type="button" class="filter-pill" data-game="CS2">CS2</button>
+        </div>
+
+        <div id="leaderboardContent"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-meta">
+        <span>&copy; 2026 Redline Esports</span>
+        <span class="footer-sep">|</span>
+        <span>FAST NUCES</span>
+      </div>
+
+      <div class="social-row" aria-label="Social Media">
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram" title="Instagram">
+          <img src="../images/icons/instagram.svg" alt="Instagram" />
+        </a>
+        <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube" title="YouTube">
+          <img src="../images/icons/youtube.svg" alt="YouTube" />
+        </a>
+        <a href="https://discord.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Discord" title="Discord">
+          <img src="../images/icons/discord.svg" alt="Discord" />
+        </a>
+        <a href="https://x.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X (formerly Twitter)" title="X">
+          <img src="../images/icons/x.svg" alt="X" />
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Join Redline Modal -->
+  <div id="joinModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="joinModalTitle" class="modal-title">Join <span>Redline</span></h2>
+        <button type="button" class="modal-close" data-close-modal aria-label="Close modal">&times;</button>
+      </div>
+      <form id="joinForm" class="modal-form">
+        <div class="form-group">
+          <label for="joinName">Player or Team Name</label>
+          <input type="text" id="joinName" required placeholder="e.g. Nuces Raptors" />
+        </div>
+        <div class="form-group">
+          <label for="joinEmail">University Email</label>
+          <input type="email" id="joinEmail" required placeholder="i263121@isb.nu.edu.pk" />
+        </div>
+        <div class="form-group">
+          <label for="joinGame">Primary Game</label>
+          <select id="joinGame" required>
+            <option value="Valorant">Valorant</option>
+            <option value="BGMI">BGMI</option>
+            <option value="CS2">CS2</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-join">Submit Registration</button>
+      </form>
+      <p id="joinFeedback" class="modal-feedback" hidden></p>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/games-data.js"></script>
+  <script src="../js/leaderboard.js"></script>
+</body>
+</html>
