@@ -14,53 +14,38 @@
 <body>
     <!-- Shared Header (reusable across pages) -->
     <header class="site-header">
-        <nav class="navbar navbar-expand-lg site-navbar" aria-label="Primary Navigation">
+        <nav class="navbar site-navbar" aria-label="Primary Navigation">
             <div class="container">
                 <a class="brand-link" href="../index.html">
                     <span class="brand-logo-box">R</span>
                     <span class="brand-text">REDLINE ESPORTS</span>
                 </a>
 
-                <div class="d-flex align-items-center gap-2 order-lg-3">
-                    <button
-                        class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#mainNav"
-                        aria-controls="mainNav"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span class="hamburger-bars" aria-hidden="true">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
-                    </button>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="dropdown">
+                        <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                        >
+                            <span class="hamburger-bars" aria-hidden="true">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end header-nav-dropdown">
+                            <li><a class="dropdown-item" href="../index.html">Home</a></li>
+                            <li><a class="dropdown-item" href="tournaments.html">Tournaments</a></li>
+                            <li><a class="dropdown-item" href="teams.html">Teams</a></li>
+                            <li><a class="dropdown-item" href="schedule.html">Matches</a></li>
+                            <li><a class="dropdown-item" href="rankings.html">Rankings</a></li>
+                            <li><a class="dropdown-item" href="news.html">News</a></li>
+                        </ul>
+                    </div>
                     <a href="login.html" class="btn-login">Login</a>
-                </div>
-
-                <div class="collapse navbar-collapse order-lg-2" id="mainNav">
-                    <ul class="navbar-nav mx-lg-auto mt-3 mt-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="tournaments.html">Tournaments</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="teams.html">Teams</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="schedule.html">Matches</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="rankings.html">Rankings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="news.html">News</a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </nav>

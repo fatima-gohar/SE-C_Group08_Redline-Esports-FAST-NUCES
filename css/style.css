@@ -70,17 +70,32 @@ main {
     text-transform: uppercase;
 }
 
-.site-navbar .nav-link {
+.header-nav-dropdown {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    min-width: 200px;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+}
+
+.header-nav-dropdown .dropdown-item {
     color: var(--text-muted);
     font-size: 0.95rem;
     font-weight: 500;
-    padding: 0.5rem 0.85rem;
-    transition: color 0.2s ease;
+    padding: 0.55rem 1.15rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.site-navbar .nav-link:hover,
-.site-navbar .nav-link:focus,
-.site-navbar .nav-link.active {
+.header-nav-dropdown .dropdown-item:hover,
+.header-nav-dropdown .dropdown-item:focus {
+    background-color: var(--bg-input);
+    color: var(--text-white);
+}
+
+.header-nav-dropdown .dropdown-item:active,
+.header-nav-dropdown .dropdown-item.active {
+    background-color: var(--accent-red);
     color: var(--text-white);
 }
 
