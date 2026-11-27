@@ -7,9 +7,9 @@
   <title>Media Gallery | REDLINE ESPORTS</title>
 
   <!-- ======================================================================
-       CSS FILE LINK (Change this path if you move style.css later)
+       CSS FILE LINK (Matches your exact filename in /css/)
        ====================================================================== -->
-  <link rel="stylesheet" href="css/i263154_media_gallery.css">
+  <link rel="stylesheet" href="../css/i263154_medai_gallery_css.css">
 </head>
 <body>
 
@@ -17,12 +17,11 @@
   <div class="topline"></div>
 
   <!-- ======================================================================
-       HEADER NAVIGATION (Media Gallery link is placed here in the header)
-       Note: Update hrefs below for teammates' pages when combining the site.
+       HEADER NAVIGATION
        ====================================================================== -->
   <header class="nav-wrap">
     <nav class="nav">
-      <a class="brand" href="index.html">
+      <a class="brand" href="../index.html">
         <span class="brandmark">R</span>
         <span>
           <strong>REDLINE ESPORTS</strong>
@@ -31,7 +30,7 @@
       </a>
 
       <div class="navlinks">
-        <a href="index.html">HOME</a>
+        <a href="../index.html">HOME</a>
         <a href="tournaments.html">TOURNAMENTS</a>
         <a href="teams.html">TEAMS</a>
         <a href="match-schedule.html">MATCHES</a>
@@ -47,7 +46,7 @@
     <div class="all-pages-menu" id="allPagesMenu">
       <div class="menu-title">All Pages</div>
       <div class="all-pages-list">
-        <a href="index.html">Home</a>
+        <a href="../index.html">Home</a>
         <a href="tournaments.html">Tournaments</a>
         <a href="teams.html">Teams</a>
         <a href="team-registration.html">Team Registration</a>
@@ -59,7 +58,7 @@
         <a href="university-rankings.html">University Rankings</a>
         <a href="hall-of-fame.html">Hall of Fame</a>
         <a href="gaming-news.html">Gaming News</a>
-        <a href="media-gallery.html" class="active">Media Gallery</a>
+        <a href="i263154_media_gallery.html" class="active">Media Gallery</a>
         <a href="contact-us.html">Contact Us</a>
         <a href="about-us.html">About Us</a>
       </div>
@@ -81,7 +80,7 @@
 
     <!-- Gallery Section -->
     <section class="wrap section">
-      <!-- Filter Buttons (From Raw Prototype: All / Photos / Videos) -->
+      <!-- Filter Buttons -->
       <div class="toolbar">
         <button class="chip active" data-filter="all">All</button>
         <button class="chip" data-filter="photo">Photos</button>
@@ -89,9 +88,8 @@
       </div>
 
       <!-- ====================================================================
-           GALLERY GRID (3 columns on desktop, matches wireframe prototype)
-           IMAGE LINKS: Update the src="..." attributes below if you move or
-           rename your image files later.
+           GALLERY GRID
+           IMAGE LINKS: All pointing up one folder (../) into /images/
            ==================================================================== -->
       <div class="gallery-grid" id="galleryGrid">
 
@@ -99,7 +97,7 @@
         <article class="gallery-card" data-category="photo">
           <div class="gallery-thumb">
             <!-- IMAGE LINK 1 -->
-            <img src="images/i263154_media_gallery_images_used/redline-arena.jpg" alt="Redline Esports main arena stage">
+            <img src="../images/i263154_media_gallery_images_used/redline-arena.jpg" alt="Redline Esports main arena stage">
             <span class="media-tag">PHOTO</span>
           </div>
           <div class="gallery-info">
@@ -112,7 +110,7 @@
         <article class="gallery-card" data-category="photo">
           <div class="gallery-thumb">
             <!-- IMAGE LINK 2 -->
-            <img src="images/i263154_media_gallery_images_used/champions-trophy.jpg" alt="Champions lifting the tournament trophy">
+            <img src="../images/i263154_media_gallery_images_used/champions-trophy.jpg" alt="Champions lifting the tournament trophy">
             <span class="media-tag">PHOTO</span>
           </div>
           <div class="gallery-info">
@@ -125,7 +123,7 @@
         <article class="gallery-card" data-category="video">
           <div class="gallery-thumb">
             <!-- IMAGE LINK 3 -->
-            <img src="stage-match.jpg" alt="Teams competing head-to-head on stage">
+            <img src="../images/i263154_media_gallery_images_used/stage-match.jpg" alt="Teams competing head-to-head on stage">
             <span class="media-tag video-tag">VIDEO</span>
             <span class="play-badge">&#9654;</span>
           </div>
@@ -139,7 +137,7 @@
         <article class="gallery-card" data-category="photo">
           <div class="gallery-thumb">
             <!-- IMAGE LINK 4 -->
-            <img src="images/i263154_media_gallery_images_used/campus-championship.jpg" alt="University Esports Championship at night">
+            <img src="../images/i263154_media_gallery_images_used/campus-championship.jpg" alt="University Esports Championship at night">
             <span class="media-tag">PHOTO</span>
           </div>
           <div class="gallery-info">
@@ -152,7 +150,7 @@
         <article class="gallery-card" data-category="video">
           <div class="gallery-thumb">
             <!-- IMAGE LINK 5 -->
-            <img src="images/i263154_media_gallery_images_used/esports-team.jpg" alt="Redline Esports team lineup">
+            <img src="../images/i263154_media_gallery_images_used/esports-team.jpg" alt="Redline Esports team lineup">
             <span class="media-tag video-tag">VIDEO</span>
             <span class="play-badge">&#9654;</span>
           </div>
@@ -166,7 +164,7 @@
         <article class="gallery-card" data-category="photo">
           <div class="gallery-thumb">
             <!-- IMAGE LINK 6 -->
-            <img src="images/i263154_media_gallery_images_used/media-hall.jpg" alt="Esports Media Gallery and Hall of Fame exhibition">
+            <img src="../images/i263154_media_gallery_images_used/media-hall.jpg" alt="Esports Media Gallery and Hall of Fame exhibition">
             <span class="media-tag">PHOTO</span>
           </div>
           <div class="gallery-info">
@@ -179,7 +177,7 @@
         <article class="gallery-card" data-category="photo">
           <div class="gallery-thumb">
             <!-- IMAGE LINK 7 -->
-            <img src="images/i263154_media_gallery_images_used/gaming-setup.jpg" alt="Red RGB pro gaming desk setup">
+            <img src="../images/i263154_media_gallery_images_used/gaming-setup.jpg" alt="Red RGB pro gaming desk setup">
             <span class="media-tag">PHOTO</span>
           </div>
           <div class="gallery-info">
@@ -192,7 +190,7 @@
         <article class="gallery-card" data-category="video">
           <div class="gallery-thumb">
             <!-- IMAGE LINK 8 -->
-            <img src="images/i263154_media_gallery_images_used/gaming-mouse.jpg" alt="Precision gaming mouse showcase">
+            <img src="../images/i263154_media_gallery_images_used/gaming-mouse.jpg" alt="Precision gaming mouse showcase">
             <span class="media-tag video-tag">VIDEO</span>
             <span class="play-badge">&#9654;</span>
           </div>
@@ -204,7 +202,7 @@
 
       </div>
 
-      <!-- Load More Button (From Raw Prototype) -->
+      <!-- Load More Button -->
       <div class="load-more-wrap">
         <button class="btn" id="loadMoreBtn">Load More</button>
       </div>
@@ -235,25 +233,21 @@
         <span>&copy; 2026 Redline Esports | FAST NUCES</span>
 
         <div class="footer-socials" aria-label="Social Media Links">
-          <!-- Instagram -->
           <a class="social-icon-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5Zm9.5 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
             </svg>
           </a>
-          <!-- YouTube -->
           <a class="social-icon-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/>
             </svg>
           </a>
-          <!-- Discord -->
           <a class="social-icon-link" href="https://discord.com/" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5a18.3 18.3 0 0 1 4.4 1.4 15.5 15.5 0 0 0-15.2 0A18.3 18.3 0 0 1 8.8 3.5L8.6 3a19.8 19.8 0 0 0-4.9 1.4C.6 9-.2 13.5.2 18a20 20 0 0 0 6 3l.8-1.3a13 13 0 0 1-2-.9l.5-.4a14.2 14.2 0 0 0 13 0l.5.4a13 13 0 0 1-2 .9l.8 1.3a20 20 0 0 0 6-3c.5-5.2-.8-9.7-3.5-13.6ZM8.7 15.2c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.6 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/>
             </svg>
           </a>
-          <!-- X -->
           <a class="social-icon-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M18.9 2H22l-6.8 7.8L23 22h-6.3l-4.9-6.4L6.2 22H3.1l7.2-8.3L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.4 3.9H4.6L17.8 20Z"/>
@@ -265,8 +259,8 @@
   </footer>
 
   <!-- ======================================================================
-       JAVASCRIPT FILE LINK (Change this path if you move script.js later)
+       JAVASCRIPT FILE LINK (Going up one folder from /pages/ into /js/)
        ====================================================================== -->
-  <script src="js/i263154_media_gallery.js"></script>
+  <script src="../js/i263154_media_gallery.js"></script>
 </body>
 </html>
