@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090a0f">
+  <title>Media Gallery | REDLINE ESPORTS</title>
+
+  <!-- ======================================================================
+       CSS FILE LINK (Change this path if you move style.css later)
+       ====================================================================== -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Accent Line -->
+  <div class="topline"></div>
+
+  <!-- ======================================================================
+       HEADER NAVIGATION (Media Gallery link is placed here in the header)
+       Note: Update hrefs below for teammates' pages when combining the site.
+       ====================================================================== -->
+  <header class="nav-wrap">
+    <nav class="nav">
+      <a class="brand" href="index.html">
+        <span class="brandmark">R</span>
+        <span>
+          <strong>REDLINE ESPORTS</strong>
+          <small>FAST NUCES</small>
+        </span>
+      </a>
+
+      <div class="navlinks">
+        <a href="index.html">HOME</a>
+        <a href="tournaments.html">TOURNAMENTS</a>
+        <a href="teams.html">TEAMS</a>
+        <a href="match-schedule.html">MATCHES</a>
+        <a href="leaderboard.html">RANKINGS</a>
+        <a href="gaming-news.html">NEWS</a>
+      </div>
+
+      <a class="btn small" href="team-registration.html">JOIN REDLINE</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open All Pages Menu">&#9776;</button>
+    </nav>
+
+    <!-- 3-Bar All-Pages Dropdown Menu -->
+    <div class="all-pages-menu" id="allPagesMenu">
+      <div class="menu-title">All Pages</div>
+      <div class="all-pages-list">
+        <a href="index.html">Home</a>
+        <a href="tournaments.html">Tournaments</a>
+        <a href="teams.html">Teams</a>
+        <a href="team-registration.html">Team Registration</a>
+        <a href="player-profiles.html">Player Profiles</a>
+        <a href="match-schedule.html">Match Schedule</a>
+        <a href="match-results.html">Match Results</a>
+        <a href="game-categories.html">Game Categories</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="university-rankings.html">University Rankings</a>
+        <a href="hall-of-fame.html">Hall of Fame</a>
+        <a href="gaming-news.html">Gaming News</a>
+        <a href="media-gallery.html" class="active">Media Gallery</a>
+        <a href="contact-us.html">Contact Us</a>
+        <a href="about-us.html">About Us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT: MEDIA GALLERY
+       ====================================================================== -->
+  <main>
+    <!-- Page Hero -->
+    <section class="pageHero">
+      <div class="wrap">
+        <div class="eyebrow">MOMENTS THAT MATTER</div>
+        <h1 class="pageTitle">MEDIA <span class="red">GALLERY</span></h1>
+        <p class="sub">Relive the moments. Highlights, stage energy, and unforgettable victories from the Redline Esports arena.</p>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="wrap section">
+      <!-- Filter Buttons (From Raw Prototype: All / Photos / Videos) -->
+      <div class="toolbar">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="photo">Photos</button>
+        <button class="chip" data-filter="video">Videos</button>
+      </div>
+
+      <!-- ====================================================================
+           GALLERY GRID (3 columns on desktop, matches wireframe prototype)
+           IMAGE LINKS: Update the src="..." attributes below if you move or
+           rename your image files later.
+           ==================================================================== -->
+      <div class="gallery-grid" id="galleryGrid">
+
+        <!-- Card 1 (Photo) -->
+        <article class="gallery-card" data-category="photo">
+          <div class="gallery-thumb">
+            <!-- IMAGE LINK 1 -->
+            <img src="redline-arena.jpg" alt="Redline Esports main arena stage">
+            <span class="media-tag">PHOTO</span>
+          </div>
+          <div class="gallery-info">
+            <h3>Redline Main Arena</h3>
+            <p>Full-house crowd under the Redline main stage lights during the finals.</p>
+          </div>
+        </article>
+
+        <!-- Card 2 (Photo) -->
+        <article class="gallery-card" data-category="photo">
+          <div class="gallery-thumb">
+            <!-- IMAGE LINK 2 -->
+            <img src="champions-trophy.jpg" alt="Champions lifting the tournament trophy">
+            <span class="media-tag">PHOTO</span>
+          </div>
+          <div class="gallery-info">
+            <h3>Championship Victory</h3>
+            <p>The winning squad lifts the golden trophy amidst confetti and fireworks.</p>
+          </div>
+        </article>
+
+        <!-- Card 3 (Video Highlight) -->
+        <article class="gallery-card" data-category="video">
+          <div class="gallery-thumb">
+            <!-- IMAGE LINK 3 -->
+            <img src="stage-match.jpg" alt="Teams competing head-to-head on stage">
+            <span class="media-tag video-tag">VIDEO</span>
+            <span class="play-badge">&#9654;</span>
+          </div>
+          <div class="gallery-info">
+            <h3>Grand Finals Recap</h3>
+            <p>Watch the best clutches and team fights from our head-to-head LAN showdown.</p>
+          </div>
+        </article>
+
+        <!-- Card 4 (Photo) -->
+        <article class="gallery-card" data-category="photo">
+          <div class="gallery-thumb">
+            <!-- IMAGE LINK 4 -->
+            <img src="campus-championship.jpg" alt="University Esports Championship at night">
+            <span class="media-tag">PHOTO</span>
+          </div>
+          <div class="gallery-info">
+            <h3>Campus Championship Night</h3>
+            <p>FAST NUCES illuminated in red and blue for the University Esports Championship.</p>
+          </div>
+        </article>
+
+        <!-- Card 5 (Video Highlight) -->
+        <article class="gallery-card" data-category="video">
+          <div class="gallery-thumb">
+            <!-- IMAGE LINK 5 -->
+            <img src="esports-team.jpg" alt="Redline Esports team lineup">
+            <span class="media-tag video-tag">VIDEO</span>
+            <span class="play-badge">&#9654;</span>
+          </div>
+          <div class="gallery-info">
+            <h3>Team Roster Spotlight</h3>
+            <p>Behind the scenes with our top campus competitors before match day.</p>
+          </div>
+        </article>
+
+        <!-- Card 6 (Photo) -->
+        <article class="gallery-card" data-category="photo">
+          <div class="gallery-thumb">
+            <!-- IMAGE LINK 6 -->
+            <img src="media-hall.jpg" alt="Esports Media Gallery and Hall of Fame exhibition">
+            <span class="media-tag">PHOTO</span>
+          </div>
+          <div class="gallery-info">
+            <h3>Hall of Fame Exhibition</h3>
+            <p>Fans exploring tournament brackets, jerseys, and trophies in the media hall.</p>
+          </div>
+        </article>
+
+        <!-- Card 7 (Photo - revealed by Load More) -->
+        <article class="gallery-card" data-category="photo">
+          <div class="gallery-thumb">
+            <!-- IMAGE LINK 7 -->
+            <img src="gaming-setup.jpg" alt="Red RGB pro gaming desk setup">
+            <span class="media-tag">PHOTO</span>
+          </div>
+          <div class="gallery-info">
+            <h3>Pro Gaming Rig</h3>
+            <p>High-refresh ultrawide monitors and custom red-lit rigs built for peak play.</p>
+          </div>
+        </article>
+
+        <!-- Card 8 (Video Highlight - revealed by Load More) -->
+        <article class="gallery-card" data-category="video">
+          <div class="gallery-thumb">
+            <!-- IMAGE LINK 8 -->
+            <img src="gaming-mouse.jpg" alt="Precision gaming mouse showcase">
+            <span class="media-tag video-tag">VIDEO</span>
+            <span class="play-badge">&#9654;</span>
+          </div>
+          <div class="gallery-info">
+            <h3>Gear &amp; Aim Showcase</h3>
+            <p>Slow-motion highlight reel celebrating precision plays and tournament gear.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Load More Button (From Raw Prototype) -->
+      <div class="load-more-wrap">
+        <button class="btn" id="loadMoreBtn">Load More</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox Preview Modal -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close preview">&times;</button>
+      <img id="lightboxImg" src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <h3 id="lightboxTitle"></h3>
+          <p id="lightboxDesc"></p>
+        </div>
+        <span class="lightbox-tag" id="lightboxTag"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       FOOTER (Copyright on left, Social logos on right)
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-bar">
+        <span>&copy; 2026 Redline Esports | FAST NUCES</span>
+
+        <div class="footer-socials" aria-label="Social Media Links">
+          <!-- Instagram -->
+          <a class="social-icon-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5Zm9.5 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
+            </svg>
+          </a>
+          <!-- YouTube -->
+          <a class="social-icon-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/>
+            </svg>
+          </a>
+          <!-- Discord -->
+          <a class="social-icon-link" href="https://discord.com/" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5a18.3 18.3 0 0 1 4.4 1.4 15.5 15.5 0 0 0-15.2 0A18.3 18.3 0 0 1 8.8 3.5L8.6 3a19.8 19.8 0 0 0-4.9 1.4C.6 9-.2 13.5.2 18a20 20 0 0 0 6 3l.8-1.3a13 13 0 0 1-2-.9l.5-.4a14.2 14.2 0 0 0 13 0l.5.4a13 13 0 0 1-2 .9l.8 1.3a20 20 0 0 0 6-3c.5-5.2-.8-9.7-3.5-13.6ZM8.7 15.2c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.6 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/>
+            </svg>
+          </a>
+          <!-- X -->
+          <a class="social-icon-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.9 2H22l-6.8 7.8L23 22h-6.3l-4.9-6.4L6.2 22H3.1l7.2-8.3L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.4 3.9H4.6L17.8 20Z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       JAVASCRIPT FILE LINK (Change this path if you move script.js later)
+       ====================================================================== -->
+  <script src="js/script.js"></script>
+</body>
+</html>
