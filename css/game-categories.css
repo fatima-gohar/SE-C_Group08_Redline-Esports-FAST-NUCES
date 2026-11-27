@@ -57,6 +57,101 @@
   color: var(--text-muted);
 }
 
+.search-bar-wrap {
+  position: relative;
+  width: min(360px, 100%);
+  margin-top: 1.15rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.95rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 17px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.category-search-input {
+  width: 100%;
+  padding: 0.65rem 1rem 0.65rem 2.6rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  color: var(--white);
+  font-size: 0.92rem;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.category-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.category-search-input:focus {
+  outline: none;
+  border-color: var(--red);
+  background-color: var(--bg-surface-alt);
+}
+
+.empty-search-state {
+  padding: 2rem 1.25rem;
+  text-align: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+}
+
+.top-bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.15rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.btn-back:hover,
+.btn-back:focus-visible {
+  border-color: var(--red);
+  background-color: var(--red-soft);
+}
+
+.btn-primary-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.58rem 1.35rem;
+  background-color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 999px;
+  color: var(--white);
+  font-size: 0.86rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color var(--transition);
+}
+
+.btn-primary-pill:hover,
+.btn-primary-pill:focus-visible {
+  background-color: var(--red-dark);
+}
+
 /* State 1: 3 Game Category Cards
    -------------------------------------------------------------------------- */
 
@@ -211,13 +306,16 @@
 }
 
 .btn-row-action {
-  padding: 0.42rem 0.9rem;
+  display: inline-block;
+  padding: 0.45rem 0.95rem;
   background-color: transparent;
   border: 1px solid var(--red);
   border-radius: var(--radius-sm);
   color: var(--white);
   font-size: 0.82rem;
   font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color var(--transition);
 }
@@ -225,6 +323,26 @@
 .btn-row-action:hover,
 .btn-row-action:focus-visible {
   background-color: var(--red);
+}
+
+.hub-footer-cta {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.leaderboard-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.35rem;
+}
+
+.team-name-cell {
+  font-weight: 700;
+  color: var(--white);
 }
 
 /* State 4 / Rankings Layout (Table + Trophy Panel)
@@ -335,8 +453,9 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.4rem 0;
+    padding: 0.45rem 0;
     text-align: right;
+    word-break: break-word;
   }
 
   .hub-table tbody td::before {
@@ -347,5 +466,14 @@
     letter-spacing: 0.05em;
     color: var(--text-muted);
     text-align: left;
+    flex-shrink: 0;
+  }
+
+  .hub-footer-cta {
+    justify-content: stretch;
+  }
+
+  .hub-footer-cta .btn-primary-pill {
+    width: 100%;
   }
 }

@@ -215,7 +215,7 @@ select {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  width: 245px;
+  width: min(245px, calc(100vw - 1.5rem));
   max-height: 76vh;
   overflow-y: auto;
   background-color: #131622;
@@ -464,10 +464,60 @@ main {
   .btn-join {
     padding: 0.5rem 0.85rem;
     font-size: 0.76rem;
+    white-space: nowrap;
   }
 
   .footer-inner {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-inner {
+    gap: 0.5rem;
+    min-height: 66px;
+  }
+
+  .brand {
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  .brand-logo {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+
+  .brand-text {
+    min-width: 0;
+  }
+
+  .brand-name {
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .header-right {
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .header-controls {
+    gap: 0.45rem;
+  }
+
+  .btn-join {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+  }
+
+  .menu-toggle {
+    width: 36px;
+    height: 34px;
+    padding: 7px 8px;
   }
 }
