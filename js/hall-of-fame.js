@@ -642,6 +642,285 @@ function bindHofCoreEvents() {
 }
 
 /** Initializes Hall of Fame state and UI. */
+function showHofToast(message) {
+  const toastEl = document.getElementById("hofToast");
+  const bodyEl = document.getElementById("hofToastBody");
+  if (!toastEl || !bodyEl) return;
+  bodyEl.textContent = message;
+  if (window.bootstrap) {
+    window.bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3200 }).show();
+  }
+}
+
+/** Renders the community nominees grid with vote progress bars and one-vote-per-browser buttons. */
+function renderNomineesGrid() {
+  const grid = document.getElementById("nomineesGrid");
+  const badge = document.getElementById("thresholdBadge");
+  if (badge) {
+    badge.textContent = `Induction Threshold: ${INDUCTION_THRESHOLD} Votes`;
+  }
+  if (!grid) return;
+
+  if (hofState.nominees.length === 0) {
+    grid.innerHTML = `
+      <div class="col-12">
+        <div class="rl-card p-4 text-center" aria-live="polite">
+          <p class="mb-0 fw-semibold">No nominees yet. Be the first to nominate!</p>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = hofState.nominees
+    .map((nom) => {
+      const hasVoted = hofState.votedIds.includes(nom.id);
+      const pct = Math.min(100, Math.round((nom.votes / INDUCTION_THRESHOLD) * 100));
+      return `
+        <div class="col-12 col-md-6">
+          <article class="rl-card p-3 p-md-4 h-100 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="badge bg-danger">${escapeHtml(nom.category)}</span>
+              <span class="small" style="color: var(--rl-text-muted);">${escapeHtml(nom.game)} • ${escapeHtml(nom.university)}</span>
+            </div>
+            <h3 class="h5 mb-1">${escapeHtml(nom.name)}</h3>
+            <p class="small flex-grow-1 mb-3" style="color: var(--rl-text-muted);">${escapeHtml(nom.bio)}</p>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between small mb-1">
+                <span>Community Votes</span>
+                <span class="fw-bold" style="color: var(--rl-gold);">${nom.votes} / ${INDUCTION_THRESHOLD}</span>
+              </div>
+              <div class="progress hof-progress" role="progressbar" aria-valuenow="${nom.votes}" aria-valuemin="0" aria-valuemax="${INDUCTION_THRESHOLD}" aria-label="${escapeHtml(nom.name)} vote progress">
+                <div class="progress-bar hof-progress-bar" style="width: ${pct}%;"></div>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn ${hasVoted ? "btn-redline-outline" : "btn-redline"} btn-sm w-100 vote-nominee-btn"
+              data-vote-id="${escapeHtml(nom.id)}"
+              ${hasVoted ? "disabled" : ""}
+            >${hasVoted ? "Voted ✓" : "Vote for Induction (+1)"}</button>
+          </article>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+/** Casts one vote per nominee per browser and auto-inducts upon reaching threshold. */
+function handleVoteNominee(nomineeId) {
+  if (hofState.votedIds.includes(nomineeId)) return;
+  const idx = hofState.nominees.findIndex((n) => n.id === nomineeId);
+  if (idx === -1) return;
+
+  const nominee = hofState.nominees[idx];
+  nominee.votes += 1;
+  hofState.votedIds.push(nomineeId);
+
+  if (nominee.votes >= INDUCTION_THRESHOLD) {
+    hofState.nominees.splice(idx, 1);
+    const inducted = {
+      id: `ind-${Date.now()}`,
+      name: nominee.name,
+      title: nominee.category,
+      university: nominee.university,
+      game: nominee.game,
+      category: nominee.category,
+      year: nominee.year || new Date().getFullYear(),
+      stats: nominee.stats || { kills: 250, wins: 22, mvpAwards: 2, championships: 1 },
+      bio: nominee.bio,
+      quote: "Inducted by the Redline community.",
+      avatar: `../images/hof-${nominee.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.jpg`,
+    };
+    hofState.inductees.unshift(inducted);
+    writeHofStorage(HOF_KEYS.INDUCTEES, hofState.inductees);
+    populateUniversityFilter();
+    renderLegendsGrid();
+    renderAwardsHistory();
+    showHofToast(`${nominee.name} reached ${INDUCTION_THRESHOLD} votes and was inducted into the Hall of Fame!`);
+  } else {
+    showHofToast(`Vote recorded for ${nominee.name} (${nominee.votes}/${INDUCTION_THRESHOLD}).`);
+  }
+
+  writeHofStorage(HOF_KEYS.NOMINEES, hofState.nominees);
+  writeHofStorage(HOF_KEYS.VOTES, hofState.votedIds);
+  renderNomineesGrid();
+}
+
+/** Computes Legend Score, Hall of Fame eligibility, and closest existing Legend. */
+function updateHofCalculator() {
+  const kills = Math.max(0, parseInt(document.getElementById("calcKills")?.value || "0", 10) || 0);
+  const wins = Math.max(0, parseInt(document.getElementById("calcWinsHof")?.value || "0", 10) || 0);
+  const mvpAwards = Math.max(0, parseInt(document.getElementById("calcMvps")?.value || "0", 10) || 0);
+  const championships = Math.max(0, parseInt(document.getElementById("calcChamps")?.value || "0", 10) || 0);
+  const resultEl = document.getElementById("hofCalcResult");
+  if (!resultEl) return;
+
+  const score = calculateLegendScore({ kills, wins, mvpAwards, championships });
+  const isEligible = score >= LEGEND_ELIGIBLE_SCORE;
+
+  let closest = null;
+  let minDiff = Infinity;
+  hofState.inductees.forEach((ind) => {
+    const indScore = calculateLegendScore(ind.stats);
+    const diff = Math.abs(indScore - score);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closest = { name: ind.name, score: indScore };
+    }
+  });
+
+  resultEl.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div>
+        <div class="small" style="color: var(--rl-text-muted);">Derived Legend Score</div>
+        <div class="fs-3 fw-bold" style="color: var(--rl-gold);">${score.toLocaleString()}</div>
+      </div>
+      <span class="badge ${isEligible ? "bg-success" : "bg-secondary"} px-3 py-2">
+        ${isEligible ? "Hall of Fame Eligible" : `Needs ${LEGEND_ELIGIBLE_SCORE - score} more`}
+      </span>
+    </div>
+    <div class="small" style="color: var(--rl-text-muted);">
+      Closest Legend: <strong>${closest ? escapeHtml(closest.name) : "N/A"}</strong> (${closest ? closest.score : 0} pts)
+    </div>
+  `;
+}
+
+/** Validates the Nominate a Player form live including duplicate check and email format. */
+function validateNominateForm() {
+  const nameEl = document.getElementById("nomName");
+  const uniEl = document.getElementById("nomUni");
+  const gameEl = document.getElementById("nomGame");
+  const catEl = document.getElementById("nomCategory");
+  const emailEl = document.getElementById("nomEmail");
+  const reasonEl = document.getElementById("nomReason");
+  const submitBtn = document.getElementById("submitNomBtn");
+  if (!nameEl || !uniEl || !gameEl || !catEl || !emailEl || !reasonEl || !submitBtn) return false;
+
+  const name = nameEl.value.trim();
+  const uni = uniEl.value.trim();
+  const game = gameEl.value;
+  const cat = catEl.value;
+  const email = emailEl.value.trim();
+  const reason = reasonEl.value.trim();
+
+  const errors = { name: "", uni: "", game: "", cat: "", email: "", reason: "" };
+
+  const duplicateInLegends = hofState.inductees.some((i) => i.name.toLowerCase() === name.toLowerCase());
+  const duplicateInNominees = hofState.nominees.some((n) => n.name.toLowerCase() === name.toLowerCase());
+  if (name.length < 2) {
+    errors.name = "Player name is required.";
+  } else if (duplicateInLegends) {
+    errors.name = "This player is already inducted in the Hall of Fame.";
+  } else if (duplicateInNominees) {
+    errors.name = "This player is already nominated for voting.";
+  }
+
+  if (uni.length < 2) errors.uni = "University is required.";
+  if (!game) errors.game = "Select a game.";
+  if (!cat) errors.cat = "Select an award category.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.email = "Enter a valid email address.";
+  }
+  if (reason.length < 20) {
+    errors.reason = `Reason must be at least 20 characters (${reason.length}/20).`;
+  }
+
+  document.getElementById("nomNameError").textContent = errors.name;
+  document.getElementById("nomUniError").textContent = errors.uni;
+  document.getElementById("nomGameError").textContent = errors.game;
+  document.getElementById("nomCategoryError").textContent = errors.cat;
+  document.getElementById("nomEmailError").textContent = errors.email;
+  document.getElementById("nomReasonError").textContent = errors.reason;
+
+  const valid = Object.values(errors).every((e) => e === "");
+  submitBtn.disabled = !valid;
+  return valid;
+}
+
+/** Handles Nominate a Player submission and switches to the Nominees tab. */
+function handleNominateSubmit(e) {
+  e.preventDefault();
+  if (!validateNominateForm()) return;
+
+  const newNominee = {
+    id: `nom-${Date.now()}`,
+    name: document.getElementById("nomName").value.trim(),
+    university: document.getElementById("nomUni").value.trim(),
+    game: document.getElementById("nomGame").value,
+    category: document.getElementById("nomCategory").value,
+    year: new Date().getFullYear(),
+    stats: { kills: 260, wins: 24, mvpAwards: 2, championships: 1 },
+    bio: document.getElementById("nomReason").value.trim(),
+    votes: 1,
+  };
+
+  hofState.nominees.unshift(newNominee);
+  hofState.votedIds.push(newNominee.id);
+  writeHofStorage(HOF_KEYS.NOMINEES, hofState.nominees);
+  writeHofStorage(HOF_KEYS.VOTES, hofState.votedIds);
+
+  renderNomineesGrid();
+  activateHofTab("nominees");
+  e.target.reset();
+  validateNominateForm();
+  showHofToast(`${newNominee.name} nominated! Added to Nominees with your opening vote.`);
+}
+
+/** Resets Hall of Fame inductees, nominees, votes, favourites, and filters to defaults. */
+function resetHofToDefaults() {
+  if (!window.confirm("Reset Hall of Fame inductees, nominees, votes, and filters to defaults?")) return;
+
+  hofState.inductees = cloneHofData(DEFAULT_INDUCTEES);
+  hofState.nominees = cloneHofData(DEFAULT_NOMINEES);
+  hofState.votedIds = [];
+  hofState.favs = [];
+  hofState.prefs = { ...DEFAULT_HOF_PREFS };
+
+  writeHofStorage(HOF_KEYS.INDUCTEES, hofState.inductees);
+  writeHofStorage(HOF_KEYS.NOMINEES, hofState.nominees);
+  writeHofStorage(HOF_KEYS.VOTES, hofState.votedIds);
+  writeHofStorage(HOF_KEYS.FAVS, hofState.favs);
+  writeHofStorage(HOF_KEYS.PREFS, hofState.prefs);
+
+  syncHofControlsFromPrefs();
+  activateHofTab(hofState.prefs.activeTab);
+  renderLegendsGrid();
+  renderNomineesGrid();
+  renderAwardsHistory();
+  updateHofCalculator();
+  showHofToast("Hall of Fame reset to default legends and nominees.");
+}
+
+/** Binds calculator, voting, nomination form, and reset button listeners. */
+function bindHofExtendedEvents() {
+  ["calcKills", "calcWinsHof", "calcMvps", "calcChamps"].forEach((id) => {
+    document.getElementById(id)?.addEventListener("input", updateHofCalculator);
+  });
+
+  document.getElementById("nomineesGrid")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-vote-id]");
+    if (btn && !btn.disabled) {
+      handleVoteNominee(btn.dataset.voteId);
+    }
+  });
+
+  const nomForm = document.getElementById("nominateForm");
+  if (nomForm) {
+    nomForm.addEventListener("submit", handleNominateSubmit);
+    ["nomName", "nomUni", "nomGame", "nomCategory", "nomEmail", "nomReason"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", validateNominateForm);
+        el.addEventListener("change", validateNominateForm);
+      }
+    });
+  }
+
+  document.getElementById("hofResetBtn")?.addEventListener("click", resetHofToDefaults);
+}
+
+/** Initializes Hall of Fame state and UI. */
 function initHallOfFame() {
   hofState.storageAvailable = checkHofStorage();
   if (!hofState.storageAvailable) {
@@ -656,8 +935,12 @@ function initHallOfFame() {
   syncHofControlsFromPrefs();
   activateHofTab(hofState.prefs.activeTab);
   bindHofCoreEvents();
+  bindHofExtendedEvents();
   renderLegendsGrid();
+  renderNomineesGrid();
   renderAwardsHistory();
+  updateHofCalculator();
+  validateNominateForm();
 }
 
 document.addEventListener("DOMContentLoaded", initHallOfFame);
