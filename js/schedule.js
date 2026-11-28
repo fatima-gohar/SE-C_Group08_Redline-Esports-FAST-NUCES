@@ -1,3 +1,5 @@
+const STORAGE_KEY = "redline_registered_teams";
+
 // Match entries sorted chronologically (all in Dec 2026):
 // teamA: first team name, teamB: opponent team name, game: game title, date: ISO Date string.
 const MATCHES = [
@@ -154,10 +156,74 @@ function updateCountdown() {
     document.getElementById("countSeconds").textContent = String(seconds).padStart(2, "0");
 }
 
+// Read registered teams from localStorage and return the most recent valid team, or null.
+function getLatestRegisteredTeam() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+            return null;
+        }
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+            return null;
+        }
+        const latest = parsed[parsed.length - 1];
+        if (!latest || typeof latest.teamName !== "string" || typeof latest.game !== "string") {
+            return null;
+        }
+        if (!latest.teamName.trim() || !latest.game.trim()) {
+            return null;
+        }
+        return latest;
+    } catch (error) {
+        return null;
+    }
+}
+
+// Count how many matches in MATCHES include the given team name as Team A or Team B.
+function countTeamMatches(teamName) {
+    const normalized = teamName.trim().toLowerCase();
+    return MATCHES.filter(function (match) {
+        return (
+            match.teamA.trim().toLowerCase() === normalized ||
+            match.teamB.trim().toLowerCase() === normalized
+        );
+    }).length;
+}
+
+// Display the registered team card using textContent, or hide it when no valid team exists.
+function renderYourTeamCard(team) {
+    const cardEl = document.getElementById("yourTeamCard");
+    const nameEl = document.getElementById("yourTeamName");
+    const metaEl = document.getElementById("yourTeamMeta");
+    const statusEl = document.getElementById("yourTeamStatus");
+
+    if (!cardEl || !nameEl || !metaEl || !statusEl) {
+        return;
+    }
+
+    if (!team) {
+        nameEl.textContent = "";
+        metaEl.textContent = "";
+        statusEl.textContent = "";
+        cardEl.classList.add("d-none");
+        return;
+    }
+
+    const university = typeof team.university === "string" ? team.university.trim() : "";
+    const matchCount = countTeamMatches(team.teamName);
+
+    nameEl.textContent = team.teamName.trim();
+    metaEl.textContent = university ? team.game.trim() + " \u2022 " + university : team.game.trim();
+    statusEl.textContent = matchCount > 0 ? "Upcoming matches: " + matchCount : "No match schedules for now";
+    cardEl.classList.remove("d-none");
+}
+
 // Initialize the match list, filter button click handlers, and 1-second countdown interval.
 function initSchedulePage() {
     const filterButtons = document.querySelectorAll(".filter-btn");
 
+    renderYourTeamCard(getLatestRegisteredTeam());
     renderMatches("All");
     updateCountdown();
     setInterval(updateCountdown, 1000);

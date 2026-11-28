@@ -99,6 +99,35 @@
     margin: 0;
 }
 
+/* Registered Team Card */
+.your-team-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.your-team-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-white);
+    margin: 0 0 0.25rem;
+}
+
+.your-team-meta {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0 0 0.65rem;
+}
+
+.your-team-status {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--accent-red);
+    margin: 0;
+}
+
 /* Filter Buttons */
 .filter-bar {
     display: flex;
