@@ -233,7 +233,7 @@ function getFallbackAvatarUrl(name) {
     .slice(0, 2)
     .toUpperCase();
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#161924"/><circle cx="60" cy="60" r="56" fill="none" stroke="#ffd700" stroke-width="4"/><text x="60" y="70" fill="#ffffff" font-family="Arial,sans-serif" font-size="38" font-weight="bold" text-anchor="middle">${initials}</text></svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg).replace(/'/g, "%27")}`;
 }
 
 /** Tests whether browser localStorage works. */

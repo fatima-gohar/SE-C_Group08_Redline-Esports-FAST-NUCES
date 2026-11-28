@@ -280,7 +280,7 @@ function calculateStandings(universities, matchRecords, gameFilter = "All", prev
   // Compute rank movement compared to previous snapshot or standings prior to latest match
   let baselineRanks = previousRankSnapshot;
   if (!baselineRanks && relevantRecords.length > 0) {
-    const withoutLatest = matchRecords.slice(0, -1);
+    const withoutLatest = relevantRecords.slice(0, -1);
     const prevStandings = calculateRanksOnly(universities, withoutLatest, gameFilter);
     baselineRanks = prevStandings;
   }

@@ -178,7 +178,7 @@ function escapeHtml(str) {
 function getNewsFallbackImage(title) {
   const safeLabel = String(title || "REDLINE NEWS").slice(0, 28);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450"><rect width="800" height="450" fill="#12141d"/><rect x="20" y="20" width="760" height="410" fill="none" stroke="#e10600" stroke-width="4"/><text x="400" y="210" fill="#e10600" font-family="Arial,sans-serif" font-size="24" font-weight="bold" text-anchor="middle">REDLINE ESPORTS WIRE</text><text x="400" y="255" fill="#ffffff" font-family="Arial,sans-serif" font-size="22" font-weight="bold" text-anchor="middle">${escapeHtml(safeLabel)}</text></svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg).replace(/'/g, "%27")}`;
 }
 
 /** Tests browser localStorage availability. */
