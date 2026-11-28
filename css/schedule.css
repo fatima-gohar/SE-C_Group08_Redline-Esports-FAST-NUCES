@@ -15,6 +15,12 @@
     --game-fortnite-bg: rgba(168, 85, 247, 0.16);
     --game-fortnite-border: rgba(168, 85, 247, 0.45);
     --game-fortnite-text: #c084fc;
+    --game-bgmi-bg: rgba(245, 158, 11, 0.16);
+    --game-bgmi-border: rgba(245, 158, 11, 0.45);
+    --game-bgmi-text: #fbbf24;
+    --game-cs2-bg: rgba(59, 130, 246, 0.16);
+    --game-cs2-border: rgba(59, 130, 246, 0.45);
+    --game-cs2-text: #60a5fa;
 }
 
 .schedule-section {
@@ -243,6 +249,18 @@
     background-color: var(--game-fortnite-bg);
     border-color: var(--game-fortnite-border);
     color: var(--game-fortnite-text);
+}
+
+.game-badge--bgmi {
+    background-color: var(--game-bgmi-bg);
+    border-color: var(--game-bgmi-border);
+    color: var(--game-bgmi-text);
+}
+
+.game-badge--cs2 {
+    background-color: var(--game-cs2-bg);
+    border-color: var(--game-cs2-border);
+    color: var(--game-cs2-text);
 }
 
 .match-datetime {

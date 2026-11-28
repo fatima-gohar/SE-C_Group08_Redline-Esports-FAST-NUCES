@@ -4,12 +4,16 @@ const STORAGE_KEY = "redline_registered_teams";
 // teamA: first team name, teamB: opponent team name, game: game title, date: ISO Date string.
 const MATCHES = [
     { teamA: "NUST Titans", teamB: "COMSATS Wolves", game: "Fortnite", date: "2026-12-06T17:00:00" },
+    { teamA: "NED Cobras", teamB: "AIR Hawks", game: "BGMI", date: "2026-12-08T18:30:00" },
     { teamA: "LUMS Strikers", teamB: "GIKI Phantoms", game: "Valorant", date: "2026-12-11T19:00:00" },
+    { teamA: "COMSATS Wolves", teamB: "NUCES Raptors", game: "CS2", date: "2026-12-13T20:00:00" },
     { teamA: "IBA Falcons", teamB: "UET Blazers", game: "COD", date: "2026-12-15T20:00:00" },
+    { teamA: "UET Blazers", teamB: "Bahria Knights", game: "BGMI", date: "2026-12-18T19:00:00" },
     { teamA: "NUCES Raptors", teamB: "Fast Legends", game: "Valorant", date: "2026-12-20T18:00:00" },
     { teamA: "Campus Dragons", teamB: "Redline Stars", game: "COD", date: "2026-12-21T19:00:00" },
     { teamA: "Bahria Knights", teamB: "NUST Titans", game: "Fortnite", date: "2026-12-24T18:30:00" },
     { teamA: "FAST Phoenix", teamB: "LUMS Strikers", game: "Valorant", date: "2026-12-27T20:00:00" },
+    { teamA: "IBA Falcons", teamB: "FAST Phoenix", game: "CS2", date: "2026-12-28T20:30:00" },
     { teamA: "Redline Stars", teamB: "GIKI Phantoms", game: "Fortnite", date: "2026-12-30T21:00:00" }
 ];
 
