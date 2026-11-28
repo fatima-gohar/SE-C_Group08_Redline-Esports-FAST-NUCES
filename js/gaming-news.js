@@ -599,6 +599,237 @@ function bindNewsCoreEvents() {
 }
 
 /** Initializes Gaming News state and renders initial content. */
+function showNewsToast(message) {
+  const toastEl = document.getElementById("newsToast");
+  const bodyEl = document.getElementById("newsToastBody");
+  if (!toastEl || !bodyEl) return;
+  bodyEl.textContent = message;
+  if (window.bootstrap) {
+    window.bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3200 }).show();
+  }
+}
+
+/** Toggles an article ID in bookmarks and refreshes card/modal buttons. */
+function toggleNewsBookmark(articleId) {
+  const idx = newsState.bookmarks.indexOf(articleId);
+  if (idx === -1) {
+    newsState.bookmarks.push(articleId);
+    showNewsToast("Article saved to bookmarks.");
+  } else {
+    newsState.bookmarks.splice(idx, 1);
+    showNewsToast("Article removed from bookmarks.");
+  }
+  writeNewsStorage(NEWS_KEYS.BOOKMARKS, newsState.bookmarks);
+  renderNewsGrid();
+
+  const modalBtn = document.getElementById("modalBookmarkBtn");
+  if (modalBtn && modalBtn.dataset.bookmarkId === articleId) {
+    const saved = newsState.bookmarks.includes(articleId);
+    modalBtn.textContent = saved ? "★ Bookmarked" : "☆ Bookmark Article";
+  }
+}
+
+/** Records up to 5 most recently viewed article IDs in localStorage. */
+function recordRecentlyViewed(articleId) {
+  newsState.recentlyViewed = [articleId, ...newsState.recentlyViewed.filter((id) => id !== articleId)].slice(0, 5);
+  writeNewsStorage(NEWS_KEYS.RECENT, newsState.recentlyViewed);
+  renderRecentlyViewed();
+}
+
+/** Renders the Recently Viewed quick-jump chips bar. */
+function renderRecentlyViewed() {
+  const section = document.getElementById("recentlyViewedSection");
+  const list = document.getElementById("recentlyViewedList");
+  if (!section || !list) return;
+
+  const validRecent = newsState.recentlyViewed
+    .map((id) => newsState.articles.find((a) => a.id === id))
+    .filter(Boolean);
+
+  if (validRecent.length === 0) {
+    section.classList.add("d-none");
+    list.innerHTML = "";
+    return;
+  }
+
+  section.classList.remove("d-none");
+  list.innerHTML = validRecent
+    .map(
+      (art) =>
+        `<button type="button" class="recent-chip" data-read-id="${escapeHtml(art.id)}">${escapeHtml(art.title)}</button>`
+    )
+    .join("");
+}
+
+/** Validates newsletter email live and shows inline feedback. */
+function validateNewsletterEmail(showEmptyError = false) {
+  const emailEl = document.getElementById("newsletterEmail");
+  const feedbackEl = document.getElementById("newsletterFeedback");
+  if (!emailEl || !feedbackEl) return false;
+
+  const email = emailEl.value.trim().toLowerCase();
+  if (!email) {
+    feedbackEl.textContent = showEmptyError ? "Please enter an email address." : "";
+    feedbackEl.className = "small text-danger";
+    return false;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    feedbackEl.textContent = "Invalid email format. Example: player@nu.edu.pk";
+    feedbackEl.className = "small text-danger";
+    return false;
+  }
+  if (newsState.subscribers.includes(email)) {
+    feedbackEl.textContent = "This email is already subscribed to Redline Dispatch.";
+    feedbackEl.className = "small text-warning";
+    return false;
+  }
+  feedbackEl.textContent = "Ready to subscribe.";
+  feedbackEl.className = "small text-success";
+  return true;
+}
+
+/** Handles Newsletter signup submission, blocking duplicates and saving email. */
+function handleNewsletterSubmit(e) {
+  e.preventDefault();
+  const emailEl = document.getElementById("newsletterEmail");
+  const feedbackEl = document.getElementById("newsletterFeedback");
+  if (!emailEl || !feedbackEl) return;
+
+  if (!validateNewsletterEmail(true)) return;
+  const email = emailEl.value.trim().toLowerCase();
+  newsState.subscribers.push(email);
+  writeNewsStorage(NEWS_KEYS.NEWSLETTER, newsState.subscribers);
+  e.target.reset();
+  feedbackEl.textContent = "Subscribed! You will receive weekly Redline Esports updates.";
+  feedbackEl.className = "small text-success fw-semibold";
+  showNewsToast("Subscribed to Redline Weekly Dispatch!");
+}
+
+/** Returns today's date as YYYY-MM-DD. */
+function getNewsTodayIso() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+}
+
+/** Validates Submit a News Tip / Add Article form fields live. */
+function validateArticleForm() {
+  const titleEl = document.getElementById("artTitle");
+  const dateEl = document.getElementById("artDate");
+  const authorEl = document.getElementById("artAuthor");
+  const summaryEl = document.getElementById("artSummary");
+  const bodyEl = document.getElementById("artBody");
+  const submitBtn = document.getElementById("submitArtBtn");
+  if (!titleEl || !dateEl || !authorEl || !summaryEl || !bodyEl || !submitBtn) return false;
+
+  const title = titleEl.value.trim();
+  const date = dateEl.value;
+  const author = authorEl.value.trim();
+  const summary = summaryEl.value.trim();
+  const body = bodyEl.value.trim();
+  const today = getNewsTodayIso();
+
+  const errors = { title: "", date: "", author: "", summary: "", body: "" };
+  if (title.length < 8) errors.title = `Headline must be at least 8 characters (${title.length}/8).`;
+  if (!date) errors.date = "Date is required.";
+  else if (date > today) errors.date = "Publish date cannot be in the future.";
+  if (author.length < 2) errors.author = "Author name is required.";
+  if (summary.length < 30) errors.summary = `Summary must be at least 30 characters (${summary.length}/30).`;
+  if (body.length < 100) errors.body = `Body must be at least 100 characters (${body.length}/100).`;
+
+  document.getElementById("artTitleError").textContent = errors.title;
+  document.getElementById("artDateError").textContent = errors.date;
+  document.getElementById("artAuthorError").textContent = errors.author;
+  document.getElementById("artSummaryError").textContent = errors.summary;
+  document.getElementById("artBodyError").textContent = errors.body;
+
+  const isValid = Object.values(errors).every((msg) => msg === "");
+  submitBtn.disabled = !isValid;
+  return isValid;
+}
+
+/** Handles publishing a new user-submitted article at the top of the feed. */
+function handleSubmitArticle(e) {
+  e.preventDefault();
+  if (!validateArticleForm()) return;
+
+  const newArticle = {
+    id: `news-${Date.now()}`,
+    title: document.getElementById("artTitle").value.trim(),
+    category: document.getElementById("artCategory").value,
+    game: document.getElementById("artGame").value,
+    date: document.getElementById("artDate").value,
+    author: document.getElementById("artAuthor").value.trim(),
+    summary: document.getElementById("artSummary").value.trim(),
+    body: document.getElementById("artBody").value.trim(),
+    image: "../images/news-community-tip.jpg",
+  };
+
+  newsState.articles.unshift(newArticle);
+  writeNewsStorage(NEWS_KEYS.ARTICLES, newsState.articles);
+
+  renderCategoryTabs();
+  renderFeaturedArticle();
+  renderNewsGrid();
+  e.target.reset();
+  document.getElementById("artDate").value = getNewsTodayIso();
+  validateArticleForm();
+  showNewsToast("Article published to Gaming News!");
+}
+
+/** Resets articles, bookmarks, recent history, newsletter subscribers, and filters. */
+function resetNewsToDefaults() {
+  if (!window.confirm("Reset all articles, bookmarks, recently viewed, and filters to defaults?")) return;
+
+  newsState.articles = cloneNewsData(DEFAULT_ARTICLES);
+  newsState.bookmarks = [];
+  newsState.recentlyViewed = [];
+  newsState.subscribers = [];
+  newsState.prefs = { ...DEFAULT_NEWS_PREFS };
+  newsState.visibleLimit = ARTICLES_PER_PAGE;
+
+  writeNewsStorage(NEWS_KEYS.ARTICLES, newsState.articles);
+  writeNewsStorage(NEWS_KEYS.BOOKMARKS, newsState.bookmarks);
+  writeNewsStorage(NEWS_KEYS.RECENT, newsState.recentlyViewed);
+  writeNewsStorage(NEWS_KEYS.NEWSLETTER, newsState.subscribers);
+  writeNewsStorage(NEWS_KEYS.PREFS, newsState.prefs);
+
+  syncNewsControlsFromPrefs();
+  renderFeaturedArticle();
+  renderRecentlyViewed();
+  renderNewsGrid();
+  document.getElementById("newsletterFeedback").textContent = "";
+  showNewsToast("Gaming News reset to default feed.");
+}
+
+/** Binds bookmark, newsletter, article submission, and reset event listeners. */
+function bindNewsExtendedEvents() {
+  document.addEventListener("click", (e) => {
+    const bmBtn = e.target.closest("[data-bookmark-id]");
+    if (bmBtn) {
+      toggleNewsBookmark(bmBtn.dataset.bookmarkId);
+    }
+  });
+
+  const emailEl = document.getElementById("newsletterEmail");
+  emailEl?.addEventListener("input", () => validateNewsletterEmail(false));
+  document.getElementById("newsletterForm")?.addEventListener("submit", handleNewsletterSubmit);
+
+  const artForm = document.getElementById("submitArticleForm");
+  if (artForm) {
+    artForm.addEventListener("submit", handleSubmitArticle);
+    ["artTitle", "artCategory", "artGame", "artDate", "artAuthor", "artSummary", "artBody"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", validateArticleForm);
+        el.addEventListener("change", validateArticleForm);
+      }
+    });
+  }
+
+  document.getElementById("newsResetBtn")?.addEventListener("click", resetNewsToDefaults);
+}
+
+/** Initializes Gaming News state and renders initial content. */
 function initGamingNews() {
   newsState.storageAvailable = checkNewsStorage();
   if (!newsState.storageAvailable) {
@@ -610,10 +841,20 @@ function initGamingNews() {
   newsState.subscribers = readNewsStringList(NEWS_KEYS.NEWSLETTER);
   newsState.prefs = loadNewsPrefs();
 
+  const artDateEl = document.getElementById("artDate");
+  if (artDateEl) {
+    const today = getNewsTodayIso();
+    artDateEl.max = today;
+    artDateEl.value = today;
+  }
+
   syncNewsControlsFromPrefs();
   bindNewsCoreEvents();
+  bindNewsExtendedEvents();
   renderFeaturedArticle();
+  renderRecentlyViewed();
   renderNewsGrid();
+  validateArticleForm();
 }
 
 document.addEventListener("DOMContentLoaded", initGamingNews);
