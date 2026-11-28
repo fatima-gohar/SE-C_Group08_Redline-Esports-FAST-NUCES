@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Redline Esports - Player Profiles Page Styles
+   ========================================================================== */
+
+.players-section {
+    padding: 3rem 0 4rem;
+}
+
+.players-header {
+    margin-bottom: 2.25rem;
+}
+
+.players-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 0.45rem;
+}
+
+.players-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Search Bar */
+.search-box {
+    position: relative;
+    max-width: 420px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    display: inline-flex;
+    pointer-events: none;
+}
+
+.search-input {
+    background-color: var(--bg-input);
+    color: var(--text-white);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.65rem 0.9rem 0.65rem 2.6rem;
+    font-size: 0.95rem;
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.75;
+}
+
+.search-input:focus {
+    background-color: var(--bg-input);
+    color: var(--text-white);
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 0.15rem rgba(225, 29, 46, 0.25);
+    outline: none;
+}
+
+/* Responsive Players Grid: 1 per row on mobile, 3 per row on desktop */
+.players-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .players-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .players-section {
+        padding: 4rem 0;
+    }
+
+    .players-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Player Card */
+.player-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.player-card:hover {
+    border-color: var(--accent-red);
+    transform: translateY(-3px);
+}
+
+.player-avatar {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-red);
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+}
+
+.player-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 0.25rem;
+}
+
+.player-university {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.1rem;
+}
+
+.player-socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.player-social-link {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-input);
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.player-social-link:hover,
+.player-social-link:focus {
+    color: var(--text-white);
+    border-color: var(--accent-red);
+}
+
+/* Empty Search Message */
+.no-players {
+    color: var(--text-muted);
+    font-size: 1rem;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+    border-radius: 8px;
+    margin: 0;
+}
