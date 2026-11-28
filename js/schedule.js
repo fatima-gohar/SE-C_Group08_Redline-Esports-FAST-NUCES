@@ -26,8 +26,8 @@ function formatMatchDate(dateStr) {
     return day + " " + month + ", " + hours + ":" + minutes + " " + period;
 }
 
-// Create and return a DOM row element displaying Team A, VS, Team B, the game badge, and date/time.
-function createMatchRow(match) {
+// Create and return a DOM row element displaying Team A, VS, Team B, optional game badge, and date/time.
+function createMatchRow(match, showBadge) {
     const row = document.createElement("article");
     row.className = "match-row";
 
@@ -50,21 +50,23 @@ function createMatchRow(match) {
     teamsWrap.appendChild(vsEl);
     teamsWrap.appendChild(teamBEl);
 
-    // Group the game badge pill and match date/time together so mobile stacks them under the teams.
+    // Group the optional game badge pill and match date/time together so mobile stacks them under the teams.
     const metaWrap = document.createElement("div");
     metaWrap.className = "match-meta";
 
-    // Build the game badge pill with a lowercase modifier class and neutral grey fallback.
-    const badgeEl = document.createElement("span");
-    const gameKey = String(match.game || "unknown").trim().toLowerCase().replace(/\s+/g, "-");
-    badgeEl.className = "game-badge game-badge--" + gameKey;
-    badgeEl.textContent = match.game;
+    if (showBadge) {
+        // Build the game badge pill with a lowercase modifier class and neutral grey fallback.
+        const badgeEl = document.createElement("span");
+        const gameKey = String(match.game || "unknown").trim().toLowerCase().replace(/\s+/g, "-");
+        badgeEl.className = "game-badge game-badge--" + gameKey;
+        badgeEl.textContent = match.game;
+        metaWrap.appendChild(badgeEl);
+    }
 
     const dateEl = document.createElement("div");
     dateEl.className = "match-datetime";
     dateEl.textContent = formatMatchDate(match.date);
 
-    metaWrap.appendChild(badgeEl);
     metaWrap.appendChild(dateEl);
 
     row.appendChild(teamsWrap);
@@ -77,8 +79,9 @@ function createMatchRow(match) {
 function renderMatches(gameFilter) {
     const listEl = document.getElementById("scheduleList");
     const emptyEl = document.getElementById("noMatchesMessage");
+    const showBadge = gameFilter === "All";
 
-    const filtered = gameFilter === "All"
+    const filtered = showBadge
         ? MATCHES
         : MATCHES.filter(function (match) {
             return match.game === gameFilter;
@@ -94,7 +97,7 @@ function renderMatches(gameFilter) {
     emptyEl.classList.add("d-none");
 
     filtered.forEach(function (match) {
-        listEl.appendChild(createMatchRow(match));
+        listEl.appendChild(createMatchRow(match, showBadge));
     });
 }
 
