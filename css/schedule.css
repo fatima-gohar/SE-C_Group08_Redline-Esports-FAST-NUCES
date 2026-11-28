@@ -2,6 +2,21 @@
    Redline Esports - Match Schedule Page Styles
    ========================================================================== */
 
+:root {
+    --game-default-bg: rgba(163, 167, 181, 0.14);
+    --game-default-border: rgba(163, 167, 181, 0.4);
+    --game-default-text: #d1d5db;
+    --game-valorant-bg: rgba(225, 29, 46, 0.16);
+    --game-valorant-border: rgba(225, 29, 46, 0.45);
+    --game-valorant-text: #ff6b78;
+    --game-cod-bg: rgba(34, 197, 94, 0.15);
+    --game-cod-border: rgba(34, 197, 94, 0.45);
+    --game-cod-text: #4ade80;
+    --game-fortnite-bg: rgba(168, 85, 247, 0.16);
+    --game-fortnite-border: rgba(168, 85, 247, 0.45);
+    --game-fortnite-text: #c084fc;
+}
+
 .schedule-section {
     padding: 3rem 0 4rem;
 }
@@ -161,6 +176,44 @@
     letter-spacing: 0.06em;
     padding: 0.2rem 0.55rem;
     border-radius: 4px;
+}
+
+.match-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.game-badge {
+    display: inline-block;
+    background-color: var(--game-default-bg);
+    border: 1px solid var(--game-default-border);
+    color: var(--game-default-text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.22rem 0.7rem;
+    border-radius: 999px;
+    line-height: 1.3;
+}
+
+.game-badge--valorant {
+    background-color: var(--game-valorant-bg);
+    border-color: var(--game-valorant-border);
+    color: var(--game-valorant-text);
+}
+
+.game-badge--cod {
+    background-color: var(--game-cod-bg);
+    border-color: var(--game-cod-border);
+    color: var(--game-cod-text);
+}
+
+.game-badge--fortnite {
+    background-color: var(--game-fortnite-bg);
+    border-color: var(--game-fortnite-border);
+    color: var(--game-fortnite-text);
 }
 
 .match-datetime {

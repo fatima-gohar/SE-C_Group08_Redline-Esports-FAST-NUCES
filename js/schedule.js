@@ -26,7 +26,7 @@ function formatMatchDate(dateStr) {
     return day + " " + month + ", " + hours + ":" + minutes + " " + period;
 }
 
-// Create and return a DOM row element displaying Team A, VS, Team B, and the match date/time.
+// Create and return a DOM row element displaying Team A, VS, Team B, the game badge, and date/time.
 function createMatchRow(match) {
     const row = document.createElement("article");
     row.className = "match-row";
@@ -50,12 +50,25 @@ function createMatchRow(match) {
     teamsWrap.appendChild(vsEl);
     teamsWrap.appendChild(teamBEl);
 
+    // Group the game badge pill and match date/time together so mobile stacks them under the teams.
+    const metaWrap = document.createElement("div");
+    metaWrap.className = "match-meta";
+
+    // Build the game badge pill with a lowercase modifier class and neutral grey fallback.
+    const badgeEl = document.createElement("span");
+    const gameKey = String(match.game || "unknown").trim().toLowerCase().replace(/\s+/g, "-");
+    badgeEl.className = "game-badge game-badge--" + gameKey;
+    badgeEl.textContent = match.game;
+
     const dateEl = document.createElement("div");
     dateEl.className = "match-datetime";
     dateEl.textContent = formatMatchDate(match.date);
 
+    metaWrap.appendChild(badgeEl);
+    metaWrap.appendChild(dateEl);
+
     row.appendChild(teamsWrap);
-    row.appendChild(dateEl);
+    row.appendChild(metaWrap);
 
     return row;
 }
