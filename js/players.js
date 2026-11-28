@@ -4,15 +4,18 @@ const SOCIAL_URLS = {
     LinkedIn: "https://www.linkedin.com"
 };
 
+const AVATAR_BASE_PATH = "../images/i263252_players/";
+
 const PLAYERS = [
-    { name: "Muhammad Abdullah", university: "NUCES", avatarColor: "#e11d2e" },
-    { name: "Sara Ahmed", university: "NUST", avatarColor: "#b91c1c" },
-    { name: "Zain Malik", university: "COMSATS", avatarColor: "#991b1b" },
-    { name: "Ayesha Khan", university: "LUMS", avatarColor: "#dc2626" },
-    { name: "Hamza Tariq", university: "GIKI", avatarColor: "#7f1d1d" },
-    { name: "Fatima Noor", university: "UET Lahore", avatarColor: "#be123c" },
-    { name: "Bilal Siddiqui", university: "IBA Karachi", avatarColor: "#9f1239" },
-    { name: "Usman Farooq", university: "Bahria University", avatarColor: "#c51626" }
+    { name: "Muhammad Abdullah", university: "NUCES", photo: "muhammad-abdullah.jpg", avatarColor: "#e11d2e" },
+    { name: "Muhammad Khan Gillani", university: "NUST", photo: "muhammad-khan-gillani.jpg", avatarColor: "#b91c1c" },
+    { name: "Triple T", university: "COMSATS", photo: "triple-t.jpg", avatarColor: "#991b1b" },
+    { name: "Rehan Sadiq", university: "LUMS", photo: "rehan-sadiq.jpg", avatarColor: "#dc2626" },
+    { name: "Ahmed Bin Nadeem", university: "GIKI", photo: "ahmed-bin-nadeem.jpg", avatarColor: "#7f1d1d" },
+    { name: "John Pork", university: "UET Lahore", photo: "john-pork.jpg", avatarColor: "#be123c" },
+    { name: "Ali Afridi", university: "IBA Karachi", photo: "ali-afridi.jpg", avatarColor: "#9f1239" },
+    { name: "Dripped Out Broccoli", university: "Bahria University", photo: "dripped-out-broccoli.jpg", avatarColor: "#c51626" },
+    { name: "Junaid", university: "NUCES", photo: "junaid.jpg", avatarColor: "#e11d2e" }
 ];
 
 // Extract up to two uppercase initials from a player's full name.
@@ -78,7 +81,25 @@ function createPlayerCard(player) {
     const avatar = document.createElement("div");
     avatar.className = "player-avatar";
     avatar.style.backgroundColor = player.avatarColor;
-    avatar.textContent = getInitials(player.name);
+
+    if (player.photo) {
+        const img = document.createElement("img");
+        img.src = AVATAR_BASE_PATH + player.photo;
+        img.alt = "Profile photo of " + player.name;
+        img.width = 76;
+        img.height = 76;
+        img.loading = "lazy";
+        img.className = "player-avatar-img";
+
+        // Fall back to the player's initials if the photo fails to load.
+        img.onerror = function () {
+            avatar.textContent = getInitials(player.name);
+        };
+
+        avatar.appendChild(img);
+    } else {
+        avatar.textContent = getInitials(player.name);
+    }
 
     const nameEl = document.createElement("h2");
     nameEl.className = "player-name";
