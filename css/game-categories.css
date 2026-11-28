@@ -431,6 +431,27 @@
     grid-template-columns: 1fr;
   }
 
+  .category-card {
+    flex-direction: row;
+  }
+
+  .category-thumb {
+    width: 120px;
+    min-width: 120px;
+    aspect-ratio: auto;
+    border-bottom: none;
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  .category-body {
+    text-align: left;
+    padding: 1rem;
+  }
+
+  .btn-view-game {
+    align-self: flex-start;
+  }
+
   .hub-table thead {
     display: none;
   }
@@ -475,5 +496,69 @@
 
   .hub-footer-cta .btn-primary-pill {
     width: 100%;
+  }
+
+  .view-top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .btn-back {
+    font-size: 0.82rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .game-filters {
+    gap: 0.45rem;
+  }
+
+  .filter-pill {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .category-thumb {
+    width: 100px;
+    min-width: 100px;
+  }
+
+  .category-body {
+    padding: 0.75rem;
+  }
+
+  .category-title {
+    font-size: 1.1rem;
+  }
+
+  .category-desc {
+    font-size: 0.84rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .btn-view-game {
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
+  }
+
+  .btn-back {
+    font-size: 0.78rem;
+    padding: 0.45rem 0.85rem;
+  }
+
+  .hub-tab {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  .filter-pill {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.74rem;
   }
 }
