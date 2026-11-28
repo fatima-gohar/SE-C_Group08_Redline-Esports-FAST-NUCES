@@ -1,3 +1,9 @@
+const SOCIAL_URLS = {
+    Discord: "https://discord.com",
+    Instagram: "https://www.instagram.com",
+    LinkedIn: "https://www.linkedin.com"
+};
+
 const PLAYERS = [
     { name: "Muhammad Abdullah", university: "NUCES", avatarColor: "#e11d2e" },
     { name: "Sara Ahmed", university: "NUST", avatarColor: "#b91c1c" },
@@ -40,7 +46,9 @@ function createSocialLinks() {
 
     socialData.forEach(function (item) {
         const link = document.createElement("a");
-        link.href = "#";
+        link.href = SOCIAL_URLS[item.label];
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
         link.className = "player-social-link";
         link.setAttribute("aria-label", item.label);
 
