@@ -1,43 +1,54 @@
 /* ==========================================================================
-   Redline Esports - Ranked Leaderboard Page (Valorant Default + Game Switcher)
+   Redline Esports - Ranked Leaderboard Page (Prototype-Faithful)
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  let activeCategory = getGameCategory(params.get("game"));
-
-  const titleEl = document.getElementById("leaderboardTitle");
-  const subtitleEl = document.getElementById("leaderboardSubtitle");
+  const gameParam = params.get("game");
   const contentEl = document.getElementById("leaderboardContent");
-  const backToHubLink = document.getElementById("backToHubLink");
-  const filterButtons = document.querySelectorAll(".leaderboard-filters .filter-pill");
+  const subtitleEl = document.querySelector(".page-subtitle");
+  const filterButtons = document.querySelectorAll(".filter-pill[data-game]");
 
-  function renderLeaderboard(category) {
-    activeCategory = category;
-    document.title = `${category.name} Ranked Leaderboard | Redline Esports`;
-    titleEl.innerHTML = `${category.name} Ranked <span>Leaderboard</span>`;
-    subtitleEl.textContent = `Top teams in ${category.name}.`;
+  if (!contentEl) return;
 
-    if (backToHubLink) {
-      backToHubLink.textContent = `\u2190 Back to ${category.name} Hub`;
-      backToHubLink.href =
-        category.id === "Valorant"
-          ? "valorant-hub.html"
-          : `valorant-hub.html?game=${encodeURIComponent(category.id)}`;
-    }
+  function renderLeaderboard(gameKey) {
+    const isAll = !gameKey || gameKey.toLowerCase() === "all";
 
     filterButtons.forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.game === category.id);
+      const matches = btn.dataset.game.toLowerCase() === (isAll ? "all" : gameKey.toLowerCase());
+      btn.classList.toggle("is-active", matches);
     });
 
-    contentEl.replaceChildren(buildRankingsLayout(category.rankings));
+    if (isAll) {
+      document.title = "Leaderboard | Redline Esports";
+      if (subtitleEl) {
+        subtitleEl.textContent = "Top performers this season — All Games.";
+      }
+      contentEl.replaceChildren(buildRankingsLayout(GENERAL_LEADERBOARD));
+    } else {
+      const activeCategory = getGameCategory(gameKey);
+      document.title = `${activeCategory.name} Ranked Leaderboard | Redline Esports`;
+      if (subtitleEl) {
+        subtitleEl.textContent = `Top performers this season — ${activeCategory.name}.`;
+      }
+      contentEl.replaceChildren(buildRankingsLayout(activeCategory.rankings));
+    }
   }
 
-  filterButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      renderLeaderboard(getGameCategory(btn.dataset.game));
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedGame = button.dataset.game;
+      renderLeaderboard(selectedGame);
+
+      const url = new URL(window.location.href);
+      if (selectedGame === "all") {
+        url.searchParams.delete("game");
+      } else {
+        url.searchParams.set("game", selectedGame);
+      }
+      window.history.replaceState({}, "", url);
     });
   });
 
-  renderLeaderboard(activeCategory);
+  renderLeaderboard(gameParam || "all");
 });

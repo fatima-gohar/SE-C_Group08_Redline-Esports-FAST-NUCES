@@ -231,7 +231,47 @@
     padding-top: 2rem;
   }
 
+  .details-top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
   .btn-leaderboard {
     width: 100%;
+  }
+
+  .details-info-col {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .details-media-col {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .player-avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .stat-line {
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .btn-back {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .matchup-heading {
+    font-size: 1.15rem;
+  }
+
+  .details-info-col {
+    padding: 1rem;
   }
 }

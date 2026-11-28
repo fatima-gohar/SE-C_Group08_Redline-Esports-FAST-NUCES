@@ -74,23 +74,19 @@
   <main>
     <section class="hub-page">
       <div class="container">
-        <div class="view-top-bar">
-          <div>
-            <span class="page-eyebrow">Division Standings</span>
-            <h1 id="leaderboardTitle" class="page-title">Valorant Ranked <span>Leaderboard</span></h1>
-            <p id="leaderboardSubtitle" class="page-subtitle">Top teams in Valorant.</p>
-          </div>
+        <div class="page-intro">
+          <span class="page-eyebrow">The Competition</span>
+          <h1 class="page-title">Leader <span>Board</span></h1>
+          <p class="page-subtitle">Top performers this season.</p>
 
-          <div class="top-bar-actions">
-            <a id="backToHubLink" href="valorant-hub.html" class="btn-back">&larr; Back to Valorant Hub</a>
-            <a href="match-results.html" class="btn-back">Back to Matches</a>
+          <div class="game-filters" role="group" aria-label="Filter leaderboard by game">
+            <button type="button" class="filter-pill is-active" data-game="all">ALL</button>
+            <button type="button" class="filter-pill" data-game="Valorant">Valorant</button>
+            <button type="button" class="filter-pill" data-game="COD">COD</button>
+            <button type="button" class="filter-pill" data-game="Fortnite">Fortnite</button>
+            <button type="button" class="filter-pill" data-game="BGMI">BGMI</button>
+            <button type="button" class="filter-pill" data-game="CS2">CS2</button>
           </div>
-        </div>
-
-        <div class="leaderboard-filters" role="group" aria-label="Select game leaderboard">
-          <button type="button" class="filter-pill is-active" data-game="Valorant">Valorant</button>
-          <button type="button" class="filter-pill" data-game="BGMI">BGMI</button>
-          <button type="button" class="filter-pill" data-game="CS2">CS2</button>
         </div>
 
         <div id="leaderboardContent"></div>
@@ -143,6 +139,8 @@
           <label for="joinGame">Primary Game</label>
           <select id="joinGame" required>
             <option value="Valorant">Valorant</option>
+            <option value="COD">COD</option>
+            <option value="Fortnite">Fortnite</option>
             <option value="BGMI">BGMI</option>
             <option value="CS2">CS2</option>
           </select>
