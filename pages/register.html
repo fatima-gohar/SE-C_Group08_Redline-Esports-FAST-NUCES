@@ -12,43 +12,54 @@
     <link rel="stylesheet" href="../css/register.css">
 </head>
 <body>
-    <!-- Shared Header (reusable across pages) -->
-    <header class="site-header">
-        <nav class="navbar site-navbar" aria-label="Primary Navigation">
-            <div class="container">
-                <a class="brand-link" href="../index.html">
-                    <span class="brand-logo-box">R</span>
-                    <span class="brand-text">REDLINE ESPORTS</span>
-                </a>
+    <!-- Top Accent Line -->
+    <div class="topline"></div>
 
-                <div class="d-flex align-items-center gap-2">
-                    <div class="dropdown">
-                        <button
-                            class="navbar-toggler"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation"
-                        >
-                            <span class="hamburger-bars" aria-hidden="true">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end header-nav-dropdown">
-                            <li><a class="dropdown-item" href="../index.html">Home</a></li>
-                            <li><a class="dropdown-item" href="tournaments.html">Tournaments</a></li>
-                            <li><a class="dropdown-item" href="teams.html">Teams</a></li>
-                            <li><a class="dropdown-item" href="schedule.html">Matches</a></li>
-                            <li><a class="dropdown-item" href="rankings.html">Rankings</a></li>
-                            <li><a class="dropdown-item" href="news.html">News</a></li>
-                        </ul>
-                    </div>
-                    <a href="login.html" class="btn-login">Login</a>
-                </div>
+    <!-- Shared Header (reusable across pages) -->
+    <header class="nav-wrap">
+        <nav class="nav" aria-label="Primary Navigation">
+            <a class="brand" href="../index.html">
+                <span class="brandmark">R</span>
+                <span>
+                    <strong>REDLINE ESPORTS</strong>
+                    <small>FAST NUCES</small>
+                </span>
+            </a>
+
+            <div class="navlinks">
+                <a href="../index.html">HOME</a>
+                <a href="tournaments.html">TOURNAMENTS</a>
+                <a href="teams.html">TEAMS</a>
+                <a href="schedule.html">MATCHES</a>
+                <a href="leaderboard.html">RANKINGS</a>
+                <a href="gaming-news.html">NEWS</a>
             </div>
+
+            <a class="btn small" href="register.html">JOIN REDLINE</a>
+            <button class="menu-btn" id="menuBtn" aria-label="Open All Pages Menu">&#9776;</button>
         </nav>
+
+        <!-- 3-Bar All-Pages Dropdown Menu -->
+        <div class="all-pages-menu" id="allPagesMenu">
+            <div class="menu-title">All Pages</div>
+            <div class="all-pages-list">
+                <a href="../index.html">Home</a>
+                <a href="tournaments.html">Tournaments</a>
+                <a href="teams.html">Teams</a>
+                <a href="register.html" class="active">Team Registration</a>
+                <a href="players.html">Player Profiles</a>
+                <a href="schedule.html">Match Schedule</a>
+                <a href="match-results.html">Match Results</a>
+                <a href="game-categories.html">Game Categories</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="university-rankings.html">University Rankings</a>
+                <a href="hall-of-fame.html">Hall of Fame</a>
+                <a href="gaming-news.html">Gaming News</a>
+                <a href="i263154_media_gallery.html">Media Gallery</a>
+                <a href="i263154_contact_us.html">Contact Us</a>
+                <a href="about-us.html">About Us</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content: Register Your Team -->
@@ -227,6 +238,8 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Shared Header Logic -->
+    <script src="../js/header.js"></script>
     <!-- Register Page Logic -->
     <script src="../js/register.js"></script>
 </body>
