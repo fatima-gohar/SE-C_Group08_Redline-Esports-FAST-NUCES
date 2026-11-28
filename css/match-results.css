@@ -320,4 +320,24 @@
   .teams-cell {
     text-align: right;
   }
+
+  .game-filters {
+    gap: 0.45rem;
+  }
+
+  .filter-pill {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .page-title {
+    font-size: 1.6rem;
+  }
+
+  .filter-pill {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.74rem;
+  }
 }

@@ -19,6 +19,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let activeGame = "all";
 
+  // Deep-link support: ?match=<id>&from=valorant-hub
+  function handleDeepLink() {
+    const params = new URLSearchParams(window.location.search);
+    const matchId = params.get("match");
+    const from = params.get("from");
+
+    if (matchId) {
+      const match = MATCHES.find((m) => String(m.id) === matchId);
+      if (match) {
+        // Update back button text if coming from hub
+        if (from === "valorant-hub" && backToResultsBtn) {
+          backToResultsBtn.textContent = `\u2190 Back to ${match.game} Hub`;
+          backToResultsBtn.addEventListener("click", () => {
+            const hubUrl =
+              match.game === "Valorant"
+                ? "valorant-hub.html"
+                : `valorant-hub.html?game=${encodeURIComponent(match.game)}`;
+            window.location.href = hubUrl;
+          }, { once: true });
+        }
+        renderTable();
+        showMatchDetails(match);
+        return true;
+      }
+    }
+    return false;
+  }
+
   function showMatchDetails(match) {
     matchImageEl.src = match.image;
     matchImageEl.alt = `${match.game} - ${match.teamA} vs ${match.teamB}`;
@@ -123,5 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   backToResultsBtn.addEventListener("click", showMatchResults);
 
-  renderTable();
+  if (!handleDeepLink()) {
+    renderTable();
+  }
 });
