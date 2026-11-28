@@ -102,10 +102,11 @@ document.addEventListener("DOMContentLoaded", function () {
   updateGallery();
 
   // ------------------------------------------------------------------------
-  // 3. Lightbox Modal for Clicking Any Gallery Card
+  // 3. Lightbox Modal for Clicking Any Gallery Card (Images & Videos)
   // ------------------------------------------------------------------------
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxVideo = document.getElementById("lightboxVideo");
   const lightboxTitle = document.getElementById("lightboxTitle");
   const lightboxDesc = document.getElementById("lightboxDesc");
   const lightboxTag = document.getElementById("lightboxTag");
@@ -115,11 +116,29 @@ document.addEventListener("DOMContentLoaded", function () {
     galleryCards.forEach(function (card) {
       card.addEventListener("click", function () {
         const img = card.querySelector("img");
+        const video = card.querySelector("video");
         const title = card.querySelector("h3");
         const desc = card.querySelector("p");
         const tag = card.querySelector(".media-tag");
 
-        if (img) {
+        // FIXED: Handle <video> cards as well as <img> cards in the lightbox
+        if (video && lightboxVideo) {
+          if (lightboxImg) {
+            lightboxImg.style.display = "none";
+            lightboxImg.removeAttribute("src");
+          }
+          lightboxVideo.style.display = "block";
+          lightboxVideo.src = video.currentSrc || video.getAttribute("src");
+          lightboxVideo.poster = video.getAttribute("poster") || "";
+          lightboxVideo.play().catch(function () {});
+        } else if (img && lightboxImg) {
+          if (lightboxVideo) {
+            lightboxVideo.pause();
+            lightboxVideo.style.display = "none";
+            lightboxVideo.removeAttribute("src");
+            lightboxVideo.load();
+          }
+          lightboxImg.style.display = "block";
           lightboxImg.src = img.src;
           lightboxImg.alt = img.alt;
         }
@@ -133,6 +152,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function closeLightbox() {
       lightbox.classList.remove("open");
+      if (lightboxVideo) {
+        lightboxVideo.pause();
+        lightboxVideo.currentTime = 0;
+        lightboxVideo.style.display = "none";
+        lightboxVideo.removeAttribute("src");
+        lightboxVideo.load();
+      }
     }
 
     if (lightboxClose) {
