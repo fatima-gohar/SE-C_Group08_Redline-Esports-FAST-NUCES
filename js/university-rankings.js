@@ -619,6 +619,419 @@ function bindCoreEvents() {
   }
 }
 
+/** Shows a Bootstrap toast notification with a status message. */
+function showRankingsToast(message) {
+  const toastEl = document.getElementById("rankingsToast");
+  const toastBody = document.getElementById("rankingsToastBody");
+  if (!toastEl || !toastBody) return;
+  toastBody.textContent = message;
+  if (window.bootstrap) {
+    window.bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3200 }).show();
+  }
+}
+
+/** Populates University A and University B dropdowns in the match form. */
+function populateUniversitySelects() {
+  const selA = document.getElementById("matchUniA");
+  const selB = document.getElementById("matchUniB");
+  if (!selA || !selB) return;
+
+  const sorted = [...appState.universities].sort((a, b) => a.shortCode.localeCompare(b.shortCode));
+  const buildOptions = (placeholder) =>
+    `<option value="">${placeholder}</option>` +
+    sorted.map((u) => `<option value="${escapeHtml(u.id)}">${escapeHtml(u.shortCode)} (${escapeHtml(u.name)})</option>`).join("");
+
+  const prevA = selA.value;
+  const prevB = selB.value;
+  selA.innerHTML = buildOptions("Select University A");
+  selB.innerHTML = buildOptions("Select University B");
+  if (sorted.some((u) => u.id === prevA)) selA.value = prevA;
+  if (sorted.some((u) => u.id === prevB)) selB.value = prevB;
+}
+
+/** Computes estimated points and projected rank in the Points Calculator widget. */
+function updatePointsCalculator() {
+  const wins = Math.max(0, parseInt(document.getElementById("calcWins")?.value || "0", 10) || 0);
+  const draws = Math.max(0, parseInt(document.getElementById("calcDraws")?.value || "0", 10) || 0);
+  const losses = Math.max(0, parseInt(document.getElementById("calcLosses")?.value || "0", 10) || 0);
+  const bonus = Math.max(0, parseInt(document.getElementById("calcBonus")?.value || "0", 10) || 0);
+  const output = document.getElementById("calcOutput");
+  if (!output) return;
+
+  const totalPoints = wins * POINTS_RULES.WIN + draws * POINTS_RULES.DRAW + losses * POINTS_RULES.LOSS + bonus;
+  const standings = calculateStandings(appState.universities, appState.matchRecords, appState.prefs.gameFilter);
+  const higherCount = standings.filter((u) => u.points > totalPoints).length;
+  const estimatedRank = higherCount + 1;
+
+  output.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <div class="small" style="color: var(--rl-text-muted);">Calculated Score</div>
+        <div class="fs-4 fw-bold" style="color: var(--rl-red);">${totalPoints.toLocaleString()} pts</div>
+      </div>
+      <div class="text-end">
+        <div class="small" style="color: var(--rl-text-muted);">Estimated Rank (${escapeHtml(appState.prefs.gameFilter)})</div>
+        <div class="fs-4 fw-bold" style="color: var(--rl-gold);">#${estimatedRank} of ${standings.length + 1}</div>
+      </div>
+    </div>
+    <div class="small mt-1" style="color: var(--rl-text-muted);">${wins}W (${wins * 3}) + ${draws}D (${draws}) + ${losses}L (0) + Bonus (${bonus})</div>
+  `;
+}
+
+/** Returns today's local date as YYYY-MM-DD for date input validation. */
+function getTodayIsoDate() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+/** Validates the Record a Match Result form live and toggles Submit availability. */
+function validateMatchForm() {
+  const dateEl = document.getElementById("matchDate");
+  const gameEl = document.getElementById("matchGame");
+  const uniAEl = document.getElementById("matchUniA");
+  const uniBEl = document.getElementById("matchUniB");
+  const resultEl = document.getElementById("matchResult");
+  const submitBtn = document.getElementById("submitMatchBtn");
+  if (!dateEl || !gameEl || !uniAEl || !uniBEl || !resultEl || !submitBtn) return false;
+
+  const errors = { date: "", game: "", uniA: "", uniB: "", result: "" };
+  const today = getTodayIsoDate();
+
+  if (!dateEl.value) {
+    errors.date = "Match date is required.";
+  } else if (dateEl.value > today) {
+    errors.date = "Match date cannot be in the future.";
+  }
+
+  if (!VALID_GAMES.includes(gameEl.value)) {
+    errors.game = "Please choose a game.";
+  }
+  if (!uniAEl.value) {
+    errors.uniA = "Select University A.";
+  }
+  if (!uniBEl.value) {
+    errors.uniB = "Select University B.";
+  } else if (uniAEl.value && uniAEl.value === uniBEl.value) {
+    errors.uniB = "University A and B must be different.";
+  }
+  if (!["A", "B", "draw"].includes(resultEl.value)) {
+    errors.result = "Select a match outcome.";
+  }
+
+  document.getElementById("matchDateError").textContent = errors.date;
+  document.getElementById("matchGameError").textContent = errors.game;
+  document.getElementById("matchUniAError").textContent = errors.uniA;
+  document.getElementById("matchUniBError").textContent = errors.uniB;
+  document.getElementById("matchResultError").textContent = errors.result;
+
+  const isValid = Object.values(errors).every((msg) => msg === "");
+  submitBtn.disabled = !isValid;
+  return isValid;
+}
+
+/** Validates the Add University form live (required, unique names/codes, valid numbers). */
+function validateAddUniversityForm() {
+  const nameEl = document.getElementById("uniName");
+  const codeEl = document.getElementById("uniShortCode");
+  const cityEl = document.getElementById("uniCity");
+  const valEl = document.getElementById("uniBaseVal");
+  const bgmiEl = document.getElementById("uniBaseBgmi");
+  const cs2El = document.getElementById("uniBaseCs2");
+  const submitBtn = document.getElementById("submitUniBtn");
+  if (!nameEl || !codeEl || !cityEl || !valEl || !bgmiEl || !cs2El || !submitBtn) return false;
+
+  const name = nameEl.value.trim();
+  const code = codeEl.value.trim();
+  const city = cityEl.value.trim();
+  const errors = { name: "", code: "", city: "", base: "" };
+
+  if (name.length < 2) {
+    errors.name = "University name is required (min 2 characters).";
+  } else if (appState.universities.some((u) => u.name.toLowerCase() === name.toLowerCase())) {
+    errors.name = "A university with this name already exists.";
+  }
+
+  if (code.length < 2) {
+    errors.code = "Short code is required (min 2 characters).";
+  } else if (appState.universities.some((u) => u.shortCode.toLowerCase() === code.toLowerCase())) {
+    errors.code = "Short code must be unique.";
+  }
+
+  if (city.length < 2) {
+    errors.city = "City is required.";
+  }
+
+  const bases = [Number(valEl.value), Number(bgmiEl.value), Number(cs2El.value)];
+  if (bases.some((n) => !Number.isFinite(n) || n < 0)) {
+    errors.base = "Baseline points must be 0 or higher.";
+  }
+
+  document.getElementById("uniNameError").textContent = errors.name;
+  document.getElementById("uniShortCodeError").textContent = errors.code;
+  document.getElementById("uniCityError").textContent = errors.city;
+  document.getElementById("uniBaseError").textContent = errors.base;
+
+  const isValid = Object.values(errors).every((msg) => msg === "");
+  submitBtn.disabled = !isValid;
+  return isValid;
+}
+
+/** Captures current rank positions before a standings mutation for movement arrows. */
+function captureRankSnapshot() {
+  const current = calculateStandings(appState.universities, appState.matchRecords, appState.prefs.gameFilter);
+  return new Map(current.map((u) => [u.id, u.rank]));
+}
+
+/** Clears temporary glow highlight classes after animation completes. */
+function triggerRowGlow(uniIds) {
+  appState.highlightedUniIds = new Set(uniIds);
+  renderStandingsTable();
+  window.setTimeout(() => {
+    appState.highlightedUniIds.clear();
+  }, 1900);
+}
+
+/** Handles Record a Match Result submission, updates storage, and refreshes UI. */
+function handleRecordMatchSubmit(e) {
+  e.preventDefault();
+  if (!validateMatchForm()) return;
+
+  const previousRanks = captureRankSnapshot();
+  const newRecord = {
+    id: `m-${Date.now()}`,
+    date: document.getElementById("matchDate").value,
+    game: document.getElementById("matchGame").value,
+    universityA: document.getElementById("matchUniA").value,
+    universityB: document.getElementById("matchUniB").value,
+    result: document.getElementById("matchResult").value,
+    isTournamentFinal: document.getElementById("matchIsFinal").checked,
+  };
+
+  appState.actionHistory.push({ type: "add_match", record: cloneData(newRecord) });
+  appState.matchRecords.push(newRecord);
+  appState.previousRanks = previousRanks;
+  writeStorage(STORAGE_KEYS.MATCH_RECORDS, appState.matchRecords);
+
+  triggerRowGlow([newRecord.universityA, newRecord.universityB]);
+  renderRecentResultsLog();
+  updatePointsCalculator();
+  updateUndoButtonState();
+
+  e.target.reset();
+  document.getElementById("matchDate").value = getTodayIsoDate();
+  validateMatchForm();
+  showRankingsToast("Match result recorded and standings updated!");
+}
+
+/** Handles Add University form submission and persists to shared storage. */
+function handleAddUniversitySubmit(e) {
+  e.preventDefault();
+  if (!validateAddUniversityForm()) return;
+
+  const name = document.getElementById("uniName").value.trim();
+  const shortCode = document.getElementById("uniShortCode").value.trim();
+  const city = document.getElementById("uniCity").value.trim();
+  const slugBase = shortCode.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "uni";
+  const uniqueId = appState.universities.some((u) => u.id === slugBase) ? `${slugBase}-${Date.now()}` : slugBase;
+
+  const newUni = {
+    id: uniqueId,
+    name,
+    shortCode,
+    city,
+    baselinePoints: {
+      Valorant: Math.max(0, Number(document.getElementById("uniBaseVal").value) || 0),
+      BGMI: Math.max(0, Number(document.getElementById("uniBaseBgmi").value) || 0),
+      CS2: Math.max(0, Number(document.getElementById("uniBaseCs2").value) || 0),
+    },
+  };
+
+  appState.previousRanks = captureRankSnapshot();
+  appState.universities.push(newUni);
+  writeStorage(STORAGE_KEYS.UNIVERSITIES, appState.universities);
+
+  populateUniversitySelects();
+  triggerRowGlow([newUni.id]);
+  updatePointsCalculator();
+
+  e.target.reset();
+  document.getElementById("uniBaseVal").value = "300";
+  document.getElementById("uniBaseBgmi").value = "300";
+  document.getElementById("uniBaseCs2").value = "300";
+  validateAddUniversityForm();
+  showRankingsToast(`${shortCode} added to University Rankings!`);
+}
+
+/** Renders the Recent Results log with Delete buttons. */
+function renderRecentResultsLog() {
+  const container = document.getElementById("recentResultsLog");
+  if (!container) return;
+
+  const uniMap = new Map(appState.universities.map((u) => [u.id, u]));
+  const recent = [...appState.matchRecords].reverse();
+
+  if (recent.length === 0) {
+    container.innerHTML = `<div class="col-12 small" style="color: var(--rl-text-muted);">No match results recorded yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = recent
+    .map((m) => {
+      const aName = uniMap.get(m.universityA)?.shortCode || m.universityA;
+      const bName = uniMap.get(m.universityB)?.shortCode || m.universityB;
+      const outcomeText = m.result === "draw" ? "Draw" : m.result === "A" ? `${aName} won` : `${bName} won`;
+      return `
+        <div class="col-12 col-md-6">
+          <div class="p-3 rounded rl-card-muted d-flex justify-content-between align-items-center gap-2">
+            <div>
+              <div class="fw-bold">${escapeHtml(aName)} vs ${escapeHtml(bName)} ${m.isTournamentFinal ? '<span class="badge bg-danger ms-1">Final +50</span>' : ""}</div>
+              <div class="small" style="color: var(--rl-text-muted);">${escapeHtml(m.date)} • ${escapeHtml(m.game)} • ${escapeHtml(outcomeText)}</div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-danger delete-match-btn" data-delete-match-id="${escapeHtml(m.id)}" aria-label="Delete match ${escapeHtml(aName)} vs ${escapeHtml(bName)}">Delete</button>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+/** Deletes a match record after user confirmation and stores it for Undo. */
+function deleteMatchRecord(matchId) {
+  const idx = appState.matchRecords.findIndex((m) => m.id === matchId);
+  if (idx === -1) return;
+  if (!window.confirm("Delete this match result and recalculate standings?")) return;
+
+  const previousRanks = captureRankSnapshot();
+  const [removed] = appState.matchRecords.splice(idx, 1);
+  appState.actionHistory.push({ type: "delete_match", record: cloneData(removed), index: idx });
+  appState.previousRanks = previousRanks;
+  writeStorage(STORAGE_KEYS.MATCH_RECORDS, appState.matchRecords);
+
+  triggerRowGlow([removed.universityA, removed.universityB]);
+  renderRecentResultsLog();
+  updatePointsCalculator();
+  updateUndoButtonState();
+  showRankingsToast("Match result deleted.");
+}
+
+/** Reverts the most recent add or delete match action. */
+function undoLastMatchAction() {
+  const lastAction = appState.actionHistory.pop();
+  if (!lastAction) return;
+
+  const previousRanks = captureRankSnapshot();
+  if (lastAction.type === "add_match") {
+    appState.matchRecords = appState.matchRecords.filter((m) => m.id !== lastAction.record.id);
+  } else if (lastAction.type === "delete_match") {
+    const insertIdx = Math.min(lastAction.index, appState.matchRecords.length);
+    appState.matchRecords.splice(insertIdx, 0, lastAction.record);
+  }
+
+  appState.previousRanks = previousRanks;
+  writeStorage(STORAGE_KEYS.MATCH_RECORDS, appState.matchRecords);
+  triggerRowGlow([lastAction.record.universityA, lastAction.record.universityB]);
+  renderRecentResultsLog();
+  updatePointsCalculator();
+  updateUndoButtonState();
+  showRankingsToast("Last match action undone.");
+}
+
+/** Updates the disabled state of the Undo button. */
+function updateUndoButtonState() {
+  const undoBtn = document.getElementById("undoLastBtn");
+  if (undoBtn) {
+    undoBtn.disabled = appState.actionHistory.length === 0;
+  }
+}
+
+/** Resets universities, match records, favourites, and preferences back to defaults. */
+function resetRankingsToDefaults() {
+  if (!window.confirm("Reset all universities, match records, filters, and favourites to defaults?")) return;
+
+  appState.universities = cloneData(DEFAULT_UNIVERSITIES);
+  appState.matchRecords = cloneData(DEFAULT_MATCH_RECORDS);
+  appState.favourites = [];
+  appState.prefs = { ...DEFAULT_PREFS };
+  appState.previousRanks = null;
+  appState.actionHistory = [];
+  appState.highlightedUniIds.clear();
+
+  writeStorage(STORAGE_KEYS.UNIVERSITIES, appState.universities);
+  writeStorage(STORAGE_KEYS.MATCH_RECORDS, appState.matchRecords);
+  writeStorage(STORAGE_KEYS.FAVOURITES, appState.favourites);
+  writeStorage(STORAGE_KEYS.PREFS, appState.prefs);
+
+  syncFilterControlsFromPrefs();
+  populateUniversitySelects();
+  renderStandingsTable();
+  renderRecentResultsLog();
+  updatePointsCalculator();
+  updateUndoButtonState();
+  showRankingsToast("All rankings data reset to defaults.");
+}
+
+/** Binds calculator, forms, results log, reset, and cross-tab storage listeners. */
+function bindExtendedEvents() {
+  ["calcWins", "calcDraws", "calcLosses", "calcBonus"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", updatePointsCalculator);
+  });
+
+  const matchForm = document.getElementById("recordMatchForm");
+  if (matchForm) {
+    matchForm.addEventListener("submit", handleRecordMatchSubmit);
+    ["matchDate", "matchGame", "matchUniA", "matchUniB", "matchResult", "matchIsFinal"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", validateMatchForm);
+        el.addEventListener("change", validateMatchForm);
+      }
+    });
+  }
+
+  const uniForm = document.getElementById("addUniversityForm");
+  if (uniForm) {
+    uniForm.addEventListener("submit", handleAddUniversitySubmit);
+    ["uniName", "uniShortCode", "uniCity", "uniBaseVal", "uniBaseBgmi", "uniBaseCs2"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("input", validateAddUniversityForm);
+    });
+  }
+
+  const logContainer = document.getElementById("recentResultsLog");
+  if (logContainer) {
+    logContainer.addEventListener("click", (e) => {
+      const delBtn = e.target.closest("[data-delete-match-id]");
+      if (delBtn) deleteMatchRecord(delBtn.dataset.deleteMatchId);
+    });
+  }
+
+  const undoBtn = document.getElementById("undoLastBtn");
+  if (undoBtn) undoBtn.addEventListener("click", undoLastMatchAction);
+
+  const resetBtn = document.getElementById("resetDataBtn");
+  if (resetBtn) resetBtn.addEventListener("click", resetRankingsToDefaults);
+
+  // Cross-tab synchronization when another tab (e.g. Match Results) updates shared storage
+  window.addEventListener("storage", (e) => {
+    if ([STORAGE_KEYS.UNIVERSITIES, STORAGE_KEYS.MATCH_RECORDS, STORAGE_KEYS.FAVOURITES, STORAGE_KEYS.PREFS].includes(e.key)) {
+      appState.universities = readValidatedStorage(STORAGE_KEYS.UNIVERSITIES, isValidUniversity, DEFAULT_UNIVERSITIES);
+      appState.matchRecords = readValidatedStorage(STORAGE_KEYS.MATCH_RECORDS, isValidMatchRecord, DEFAULT_MATCH_RECORDS);
+      appState.favourites = loadFavourites();
+      appState.prefs = loadPrefs();
+      syncFilterControlsFromPrefs();
+      populateUniversitySelects();
+      renderStandingsTable();
+      renderRecentResultsLog();
+      updatePointsCalculator();
+      showRankingsToast("Standings synced from another browser tab.");
+    }
+  });
+}
+
 /** Loads persisted data from localStorage and renders initial UI. */
 function initUniversityRankings() {
   appState.storageAvailable = checkStorageAvailability();
@@ -628,9 +1041,23 @@ function initUniversityRankings() {
   appState.favourites = loadFavourites();
   appState.prefs = loadPrefs();
 
+  const matchDateInput = document.getElementById("matchDate");
+  if (matchDateInput) {
+    const today = getTodayIsoDate();
+    matchDateInput.max = today;
+    matchDateInput.value = today;
+  }
+
   syncFilterControlsFromPrefs();
+  populateUniversitySelects();
   bindCoreEvents();
+  bindExtendedEvents();
   renderStandingsTable();
+  renderRecentResultsLog();
+  updatePointsCalculator();
+  updateUndoButtonState();
+  validateMatchForm();
+  validateAddUniversityForm();
 }
 
 document.addEventListener("DOMContentLoaded", initUniversityRankings);
